@@ -1,1 +1,233 @@
-hello
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Matt's Daily Brief｜每日日報</title>
+<style>
+:root{
+  --bg:#080a10;--bg2:#0e1118;--bg3:#131720;
+  --border:#1e2337;--text:#e2e8f0;--muted:#64748b;
+  --blue:#3b82f6;--orange:#f7931a;--green:#22c55e;--red:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HERO */
+.hero{
+  background:linear-gradient(160deg,#0c1020 0%,#080a10 60%);
+  border-bottom:1px solid var(--border);
+  padding:64px 24px 52px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);
+  color:var(--blue);font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;padding:6px 18px;border-radius:30px;margin-bottom:24px;
+}
+.live-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.hero h1{font-size:clamp(32px,7vw,60px);font-weight:900;letter-spacing:-1.5px;color:#f8fafc;line-height:1.05;}
+.hero h1 .accent{background:linear-gradient(90deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{color:var(--muted);font-size:15px;margin-top:14px;letter-spacing:.5px;}
+.hero-stats{
+  display:flex;justify-content:center;gap:48px;flex-wrap:wrap;
+  margin-top:36px;padding-top:32px;border-top:1px solid var(--border);
+}
+.hstat label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.hstat .val{font-size:26px;font-weight:900;color:#f8fafc;margin-top:4px;}
+
+/* WRAP */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px;}
+
+/* SECTION */
+.sec{
+  margin-top:56px;display:flex;align-items:center;gap:14px;
+  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);
+}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* REPORT GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:24px;}
+
+.report-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:18px;
+  overflow:hidden;transition:border-color .2s,transform .15s;
+  text-decoration:none;color:inherit;display:flex;flex-direction:column;
+}
+.report-card:hover{border-color:#3b4a80;transform:translateY(-3px);}
+.report-card.intl:hover{border-color:#2d5a9e;}
+.report-card.crypto:hover{border-color:#7a4e14;}
+
+.card-thumb{
+  height:140px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.card-thumb.intl-bg{background:linear-gradient(135deg,#080e1e,#0d1a32,#0a1428);}
+.card-thumb.crypto-bg{background:linear-gradient(135deg,#100800,#1e1000,#140a00);}
+.card-thumb .big-emoji{font-size:64px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.6));z-index:1;}
+.card-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(8,10,16,.8));
+}
+.card-thumb .thumb-date{
+  position:absolute;bottom:12px;right:14px;z-index:2;
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.5);
+  letter-spacing:1px;
+}
+
+.card-body{padding:22px 22px 24px;flex:1;display:flex;flex-direction:column;}
+.card-tag{
+  display:inline-block;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 10px;border-radius:6px;margin-bottom:12px;width:fit-content;
+}
+.tag-intl{background:rgba(59,130,246,.12);color:#60a5fa;}
+.tag-crypto{background:rgba(247,147,26,.12);color:#fb923c;}
+.card-title{font-size:17px;font-weight:800;color:#f8fafc;line-height:1.35;}
+.card-desc{font-size:13px;color:#94a3b8;margin-top:8px;line-height:1.6;flex:1;}
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--border);
+}
+.card-date{font-size:12px;color:var(--muted);}
+.card-arrow{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:700;color:var(--blue);
+}
+.card-arrow .arrow{transition:transform .2s;}
+.report-card:hover .card-arrow .arrow{transform:translateX(4px);}
+
+/* EMPTY STATE */
+.empty{
+  background:var(--bg2);border:1px dashed var(--border);border-radius:16px;
+  padding:40px;text-align:center;color:var(--muted);font-size:14px;
+  grid-column:1/-1;
+}
+
+/* ABOUT */
+.about{
+  background:var(--bg2);border:1px solid var(--border);border-radius:18px;
+  padding:32px 36px;margin-top:24px;
+  display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;
+}
+.about-icon{font-size:40px;flex-shrink:0;}
+.about h2{font-size:18px;font-weight:800;color:#f8fafc;margin-bottom:10px;}
+.about p{font-size:14px;color:#94a3b8;line-height:1.7;}
+.about-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.ap{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;font-size:12px;color:#94a3b8;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);padding:28px 24px;
+  text-align:center;color:var(--muted);font-size:12px;line-height:1.8;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge"><span class="live-dot"></span>Auto-generated Daily</div>
+  <h1>Matt's <span class="accent">Daily Brief</span></h1>
+  <p class="hero-sub">每日自動彙整・國際大事 × 加密貨幣・每天 07:30 更新</p>
+  <div class="hero-stats">
+    <div class="hstat"><label>自動排程</label><div class="val">07:30</div></div>
+    <div class="hstat"><label>報告類型</label><div class="val">2</div></div>
+    <div class="hstat"><label>由</label><div class="val" style="font-size:18px;margin-top:8px;">Claude AI</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- INTERNATIONAL NEWS -->
+  <div class="sec">🌍 國際日報</div>
+  <div class="grid" id="intl-grid">
+    <a class="report-card intl" href="國際日報_2026-03-28.html">
+      <div class="card-thumb intl-bg">
+        <span class="big-emoji">🌍</span>
+        <span class="thumb-date">2026/03/28</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-intl">國際日報</span>
+        <div class="card-title">2026 年 3 月 28 日・國際大事彙整</div>
+        <div class="card-desc">美伊衝突第 28 天・川普延緩打擊至 4/6・全美「No Kings」逾 900 萬人示威・俄烏春季攻勢・台灣 F-16V 首架到位</div>
+        <div class="card-footer">
+          <span class="card-date">📅 2026/03/28</span>
+          <span class="card-arrow">閱讀報告 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- CRYPTO -->
+  <div class="sec">🪙 加密貨幣日報</div>
+  <div class="grid" id="crypto-grid">
+    <a class="report-card crypto" href="加密貨幣日報_2026-03-28.html">
+      <div class="card-thumb crypto-bg">
+        <span class="big-emoji">🪙</span>
+        <span class="thumb-date">2026/03/28</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-crypto">加密貨幣日報</span>
+        <div class="card-title">2026 年 3 月 28 日・幣圈市場彙整</div>
+        <div class="card-desc">BTC $67,800・ETH 跌破 $2,000・恐懼指數 22・$140億期權到期・貝萊德 ETHB ETF 納斯達克掛牌</div>
+        <div class="card-footer">
+          <span class="card-date">📅 2026/03/28</span>
+          <span class="card-arrow">閱讀報告 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+    <a class="report-card crypto" href="加密貨幣日報_2026-03-27_v2.html">
+      <div class="card-thumb crypto-bg">
+        <span class="big-emoji">📊</span>
+        <span class="thumb-date">2026/03/27</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-crypto">加密貨幣日報</span>
+        <div class="card-title">2026 年 3 月 27 日・幣圈市場彙整</div>
+        <div class="card-desc">BTC $68,787・ETH $2,047・恐懼指數 13 極度恐慌・SEC 代幣化豁免框架・Coinbase 房貸方案・$135億衍生品到期</div>
+        <div class="card-footer">
+          <span class="card-date">📅 2026/03/27</span>
+          <span class="card-arrow">閱讀報告 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="sec">關於此頁面</div>
+  <div class="about">
+    <div class="about-icon">🤖</div>
+    <div>
+      <h2>全自動 AI 日報系統</h2>
+      <p>此頁面由 Claude AI（Cowork 模式）每天早上 07:30 自動執行，搜尋當日最新資訊，產出圖文並茂的 HTML 日報並同步推送至 GitHub Pages。無需人工介入，開啟即可閱讀。</p>
+      <div class="about-pills">
+        <span class="ap">⏰ 每日 07:30 自動更新</span>
+        <span class="ap">🌍 國際新聞・繁體中文摘要</span>
+        <span class="ap">🪙 加密貨幣市場數據</span>
+        <span class="ap">📊 Chart.js 互動圖表</span>
+        <span class="ap">🚀 GitHub Pages 自動部署</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  🤖 由 Claude Cowork 自動生成並維護｜<strong>mat886.github.io/Matt-global-daily</strong><br/>
+  內容僅供參考，不構成任何投資或政治建議。
+</footer>
+
+</body>
+</html>
