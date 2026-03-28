@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪙 加密貨幣日報｜2026/03/28</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #080a10;
+    --bg2: #0d1117;
+    --bg3: #141923;
+    --bg4: #1a2030;
+    --border: #1e2736;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --btc: #f7931a;
+    --eth: #627eea;
+    --sol: #9945ff;
+    --bnb: #f3ba2f;
+    --xrp: #346aa9;
+    --gain: #22c55e;
+    --loss: #ef4444;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0f1e 0%, #0d1a35 50%, #080a10 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(247,147,26,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(98,126,234,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .hero-subtitle {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 20px;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+  }
+  .stat-pill .label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .stat-pill .value { font-size: 15px; font-weight: 600; color: var(--text); }
+  .stat-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* ── MAIN LAYOUT ── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px 0; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section { margin-bottom: 36px; }
+
+  /* ── FEAR & GREED ── */
+  .fg-container {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .fg-chart-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .fg-score-overlay {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .fg-score-num { font-size: 48px; font-weight: 800; color: #ef4444; line-height: 1; }
+  .fg-score-label { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .fg-info h3 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .fg-info .fg-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 16px; }
+  .fg-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fg-pill {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+    color: #ef4444;
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .fg-pill.neutral { background: rgba(234,179,8,0.1); border-color: rgba(234,179,8,0.25); color: #eab308; }
+  .fg-scale {
+    display: flex;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .fg-scale-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .fg-scale-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── PRICE CARDS ── */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .price-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .price-card.btc::before { background: var(--btc); }
+  .price-card.eth::before { background: var(--eth); }
+  .price-card.sol::before { background: var(--sol); }
+  .price-card.bnb::before { background: var(--bnb); }
+  .price-card.xrp::before { background: var(--xrp); }
+  .price-card:hover { border-color: #2d3748; transform: translateY(-2px); }
+  .coin-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .coin-logo {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .coin-logo.btc { background: linear-gradient(135deg, #f7931a, #e8820a); }
+  .coin-logo.eth { background: linear-gradient(135deg, #627eea, #4561d8); }
+  .coin-logo.sol { background: linear-gradient(135deg, #9945ff, #7a2de0); }
+  .coin-logo.bnb { background: linear-gradient(135deg, #f3ba2f, #d9a218); }
+  .coin-logo.xrp { background: linear-gradient(135deg, #346aa9, #23578c); }
+  .coin-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .coin-ticker { font-size: 12px; color: var(--text3); }
+  .coin-price { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .coin-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .coin-change.up { background: rgba(34,197,94,0.12); color: var(--gain); }
+  .coin-change.down { background: rgba(239,68,68,0.12); color: var(--loss); }
+  .coin-vol { font-size: 11px; color: var(--text3); margin-bottom: 10px; }
+  .sparkline { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
+  .spark-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+    transition: opacity 0.2s;
+  }
+  .spark-bar:hover { opacity: 0.7; }
+
+  /* ── CHARTS GRID ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .chart-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .chart-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .chart-card-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 20px;
+  }
+  .chart-wrap { position: relative; }
+
+  /* ── DOMINANCE BAR ── */
+  .dom-bar-container {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .dom-bar {
+    height: 14px;
+    border-radius: 100px;
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 16px;
+    gap: 2px;
+  }
+  .dom-seg {
+    height: 100%;
+    border-radius: 0;
+    transition: opacity 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .dom-seg:first-child { border-radius: 100px 0 0 100px; }
+  .dom-seg:last-child { border-radius: 0 100px 100px 0; }
+  .dom-seg:hover { opacity: 0.8; }
+  .dom-legend { display: flex; flex-wrap: wrap; gap: 16px; }
+  .dom-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
+  .dom-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .dom-legend-pct { font-weight: 600; color: var(--text); }
+
+  /* ── ETF SECTION ── */
+  .etf-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .etf-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .etf-icon { font-size: 28px; margin-bottom: 8px; }
+  .etf-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .etf-value { font-size: 22px; font-weight: 700; color: var(--text); }
+  .etf-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* ── DERIVATIVES ALERT ── */
+  .deriv-alert {
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .deriv-icon { font-size: 28px; flex-shrink: 0; }
+  .deriv-title { font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 6px; }
+  .deriv-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .deriv-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .deriv-badge {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #ef4444;
+    border-radius: 100px;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ── GAINERS/LOSERS ── */
+  .gl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .gl-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .gl-header {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .gl-header.gain { background: rgba(34,197,94,0.08); color: var(--gain); border-bottom: 1px solid rgba(34,197,94,0.15); }
+  .gl-header.loss { background: rgba(239,68,68,0.08); color: var(--loss); border-bottom: 1px solid rgba(239,68,68,0.15); }
+  .gl-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .gl-row:last-child { border-bottom: none; }
+  .gl-rank { font-size: 11px; color: var(--text3); width: 16px; }
+  .gl-sym { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; margin-left: 10px; }
+  .gl-price { font-size: 13px; color: var(--text2); }
+  .gl-pct {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    min-width: 70px;
+    text-align: right;
+  }
+  .gl-pct.gain { color: var(--gain); background: rgba(34,197,94,0.1); }
+  .gl-pct.loss { color: var(--loss); background: rgba(239,68,68,0.1); }
+
+  /* ── NEWS ── */
+  .news-hero {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+  }
+  .news-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    min-height: 160px;
+  }
+  .news-thumb.liquidation { background: linear-gradient(135deg, #1a0505, #2d0808); }
+  .news-thumb.etf { background: linear-gradient(135deg, #051a10, #08310f); }
+  .news-thumb.reg { background: linear-gradient(135deg, #05101a, #08253d); }
+  .news-thumb.tech { background: linear-gradient(135deg, #12051a, #220d35); }
+  .news-thumb.market { background: linear-gradient(135deg, #1a1205, #352308); }
+  .news-thumb.geo { background: linear-gradient(135deg, #1a0a05, #351508); }
+  .news-thumb.defi { background: linear-gradient(135deg, #051a1a, #083535); }
+  .news-thumb.instit { background: linear-gradient(135deg, #051005, #0e2d0e); }
+  .news-body { padding: 24px; display: flex; flex-direction: column; justify-content: center; }
+  .news-category {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .cat-reg { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.25); }
+  .cat-etf { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.22); }
+  .cat-instit { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.22); }
+  .cat-tech { background: rgba(249,115,22,0.12); color: #fb923c; border: 1px solid rgba(249,115,22,0.22); }
+  .cat-geo { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.22); }
+  .cat-defi { background: rgba(20,184,166,0.12); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.22); }
+  .cat-market { background: rgba(234,179,8,0.12); color: #fbbf24; border: 1px solid rgba(234,179,8,0.22); }
+  .news-headline { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.5; margin-bottom: 10px; }
+  .news-headline.small { font-size: 14px; }
+  .news-summary { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .news-meta { margin-top: 10px; font-size: 11px; color: var(--text3); display: flex; gap: 12px; }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .news-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+  }
+  .news-card .news-thumb { min-height: 110px; font-size: 32px; }
+  .news-card .news-body { padding: 14px; }
+  .news-card .news-summary { font-size: 12px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-disclaimer { font-size: 11px; color: var(--text3); max-width: 600px; line-height: 1.6; }
+  .footer-brand { font-size: 12px; color: var(--text2); font-weight: 500; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .price-grid { grid-template-columns: repeat(3, 1fr); }
+    .etf-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 800px) {
+    .price-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+    .fg-container { grid-template-columns: 1fr; }
+    .news-hero { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .gl-grid { grid-template-columns: 1fr; }
+    .hero { padding: 24px 20px; }
+    .container { padding: 20px 16px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-title">🪙 加密貨幣日報｜2026/03/28</div>
+  <div class="hero-subtitle">市場總覽 · 即時數據 · 機構動向 · 深度分析</div>
+  <div class="hero-stats">
+    <div class="stat-pill">
+      <div class="dot" style="background:#f7931a;"></div>
+      <span class="label">總市值</span>
+      <span class="value">$2.36兆</span>
+    </div>
+    <div class="stat-pill">
+      <div class="dot" style="background:#627eea;"></div>
+      <span class="label">24h 交易量</span>
+      <span class="value">$1,070億</span>
+    </div>
+    <div class="stat-pill">
+      <div class="dot" style="background:#f7931a;"></div>
+      <span class="label">BTC 佔比</span>
+      <span class="value">57.0%</span>
+    </div>
+    <div class="stat-pill">
+      <div class="dot" style="background:#ef4444;"></div>
+      <span class="label">恐慌貪婪指數</span>
+      <span class="value" style="color:#ef4444;">22 · 極度恐慌</span>
+    </div>
+    <div class="stat-pill">
+      <div class="dot" style="background:#3b82f6;"></div>
+      <span class="label">資料時間</span>
+      <span class="value">2026-03-28 UTC</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ══ FEAR & GREED ══ -->
+  <div class="section">
+    <div class="section-title">😨 市場情緒指標</div>
+    <div class="fg-container">
+      <div class="fg-chart-wrap">
+        <canvas id="fgChart" width="240" height="140"></canvas>
+        <div class="fg-score-overlay">
+          <div class="fg-score-num">22</div>
+          <div class="fg-score-label">極度恐慌</div>
+        </div>
+      </div>
+      <div class="fg-info">
+        <h3>市場情緒：極度恐慌 😱</h3>
+        <p class="fg-desc">
+          加密貨幣恐慌貪婪指數今日讀數為 <strong style="color:#ef4444;">22</strong>，處於「極度恐慌」區間。市場已連續 <strong>46 天</strong>維持極度恐慌狀態，為近年最長連續恐慌紀錄之一。比特幣在地緣政治緊張局勢升溫、大規模期權到期及槓桿多頭平倉的三重壓力下，本週跌破 $6.8 萬美元關口，ETH 亦跌破 $2,000 心理支撐位。歷史數據顯示，當指數低於 15 時買入，90 天平均報酬率達 +38.4%，具備反向操作機會。
+        </p>
+        <div class="fg-pills">
+          <span class="fg-pill">📉 極度恐慌持續 46 天</span>
+          <span class="fg-pill">⚡ 24h 清算 $2.58 億</span>
+          <span class="fg-pill neutral">🕰️ 歷史機會區間</span>
+          <span class="fg-pill">🔻 BTC 跌破 $68K</span>
+        </div>
+        <div class="fg-scale" style="margin-top:16px;">
+          <div class="fg-scale-item"><div class="fg-scale-dot" style="background:#ef4444;"></div> 0–24 極度恐慌</div>
+          <div class="fg-scale-item"><div class="fg-scale-dot" style="background:#f97316;"></div> 25–44 恐慌</div>
+          <div class="fg-scale-item"><div class="fg-scale-dot" style="background:#eab308;"></div> 45–55 中性</div>
+          <div class="fg-scale-item"><div class="fg-scale-dot" style="background:#84cc16;"></div> 56–74 貪婪</div>
+          <div class="fg-scale-item"><div class="fg-scale-dot" style="background:#22c55e;"></div> 75–100 極度貪婪</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRICE CARDS ══ -->
+  <div class="section">
+    <div class="section-title">💰 主流幣種行情</div>
+    <div class="price-grid">
+
+      <!-- BTC -->
+      <div class="price-card btc">
+        <div class="coin-header">
+          <div class="coin-logo btc">₿</div>
+          <div><div class="coin-name">Bitcoin</div><div class="coin-ticker">BTC</div></div>
+        </div>
+        <div class="coin-price">$67,800</div>
+        <span class="coin-change down">▼ 1.88%</span>
+        <div class="coin-vol">24h 量：$355 億</div>
+        <div class="sparkline" id="btc-spark">
+          <div class="spark-bar" style="background:#f7931a;height:82%;"></div>
+          <div class="spark-bar" style="background:#f7931a;height:78%;"></div>
+          <div class="spark-bar" style="background:#f7931a;height:69%;"></div>
+          <div class="spark-bar" style="background:#f7931a;height:64%;"></div>
+          <div class="spark-bar" style="background:#f7931a;height:58%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:42%;"></div>
+          <div class="spark-bar" style="background:#f7931a;height:48%;"></div>
+        </div>
+      </div>
+
+      <!-- ETH -->
+      <div class="price-card eth">
+        <div class="coin-header">
+          <div class="coin-logo eth">Ξ</div>
+          <div><div class="coin-name">Ethereum</div><div class="coin-ticker">ETH</div></div>
+        </div>
+        <div class="coin-price">$1,981</div>
+        <span class="coin-change down">▼ 4.23%</span>
+        <div class="coin-vol">24h 量：$182 億</div>
+        <div class="sparkline">
+          <div class="spark-bar" style="background:#627eea;height:75%;"></div>
+          <div class="spark-bar" style="background:#627eea;height:72%;"></div>
+          <div class="spark-bar" style="background:#627eea;height:68%;"></div>
+          <div class="spark-bar" style="background:#627eea;height:62%;"></div>
+          <div class="spark-bar" style="background:#627eea;height:55%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:38%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:35%;"></div>
+        </div>
+      </div>
+
+      <!-- SOL -->
+      <div class="price-card sol">
+        <div class="coin-header">
+          <div class="coin-logo sol">◎</div>
+          <div><div class="coin-name">Solana</div><div class="coin-ticker">SOL</div></div>
+        </div>
+        <div class="coin-price">$128.40</div>
+        <span class="coin-change down">▼ 3.52%</span>
+        <div class="coin-vol">24h 量：$52 億</div>
+        <div class="sparkline">
+          <div class="spark-bar" style="background:#9945ff;height:88%;"></div>
+          <div class="spark-bar" style="background:#9945ff;height:82%;"></div>
+          <div class="spark-bar" style="background:#9945ff;height:76%;"></div>
+          <div class="spark-bar" style="background:#9945ff;height:70%;"></div>
+          <div class="spark-bar" style="background:#9945ff;height:65%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:50%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:48%;"></div>
+        </div>
+      </div>
+
+      <!-- BNB -->
+      <div class="price-card bnb">
+        <div class="coin-header">
+          <div class="coin-logo bnb">B</div>
+          <div><div class="coin-name">BNB</div><div class="coin-ticker">BNB</div></div>
+        </div>
+        <div class="coin-price">$582.30</div>
+        <span class="coin-change down">▼ 3.02%</span>
+        <div class="coin-vol">24h 量：$18 億</div>
+        <div class="sparkline">
+          <div class="spark-bar" style="background:#f3ba2f;height:72%;"></div>
+          <div class="spark-bar" style="background:#f3ba2f;height:70%;"></div>
+          <div class="spark-bar" style="background:#f3ba2f;height:68%;"></div>
+          <div class="spark-bar" style="background:#f3ba2f;height:63%;"></div>
+          <div class="spark-bar" style="background:#f3ba2f;height:58%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:47%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:46%;"></div>
+        </div>
+      </div>
+
+      <!-- XRP -->
+      <div class="price-card xrp">
+        <div class="coin-header">
+          <div class="coin-logo xrp">✕</div>
+          <div><div class="coin-name">XRP</div><div class="coin-ticker">XRP</div></div>
+        </div>
+        <div class="coin-price">$2.05</div>
+        <span class="coin-change down">▼ 6.01%</span>
+        <div class="coin-vol">24h 量：$41 億</div>
+        <div class="sparkline">
+          <div class="spark-bar" style="background:#346aa9;height:85%;"></div>
+          <div class="spark-bar" style="background:#346aa9;height:80%;"></div>
+          <div class="spark-bar" style="background:#346aa9;height:74%;"></div>
+          <div class="spark-bar" style="background:#346aa9;height:66%;"></div>
+          <div class="spark-bar" style="background:#346aa9;height:58%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:42%;"></div>
+          <div class="spark-bar" style="background:#ef4444;height:40%;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CHARTS ══ -->
+  <div class="section">
+    <div class="section-title">📊 技術圖表分析</div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card-title">₿ Bitcoin 7 日走勢</div>
+        <div class="chart-card-sub">2026/03/22 – 2026/03/28 · 日線收盤價 (USD)</div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="btcLineChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">🍩 市值佔比分布</div>
+        <div class="chart-card-sub">主流資產市值比重 · 2026/03/28</div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="dominanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DOMINANCE BAR ══ -->
+  <div class="section">
+    <div class="section-title">📊 市場佔比橫條</div>
+    <div class="dom-bar-container">
+      <div class="dom-bar">
+        <div class="dom-seg" style="width:57%;background:#f7931a;" title="BTC 57%"></div>
+        <div class="dom-seg" style="width:10%;background:#627eea;" title="ETH 10%"></div>
+        <div class="dom-seg" style="width:7%;background:#6b7280;" title="穩定幣 7%"></div>
+        <div class="dom-seg" style="width:5%;background:#346aa9;" title="XRP 5%"></div>
+        <div class="dom-seg" style="width:4%;background:#f3ba2f;" title="BNB 4%"></div>
+        <div class="dom-seg" style="width:17%;background:#374151;" title="其他 17%"></div>
+      </div>
+      <div class="dom-legend">
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#f7931a;"></div>
+          Bitcoin <span class="dom-legend-pct">57.0%</span>
+        </div>
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#627eea;"></div>
+          Ethereum <span class="dom-legend-pct">10.0%</span>
+        </div>
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#6b7280;"></div>
+          穩定幣 <span class="dom-legend-pct">7.0%</span>
+        </div>
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#346aa9;"></div>
+          XRP <span class="dom-legend-pct">5.0%</span>
+        </div>
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#f3ba2f;"></div>
+          BNB <span class="dom-legend-pct">4.0%</span>
+        </div>
+        <div class="dom-legend-item">
+          <div class="dom-legend-dot" style="background:#374151;"></div>
+          其他 <span class="dom-legend-pct">17.0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ETF SECTION ══ -->
+  <div class="section">
+    <div class="section-title">🏦 比特幣現貨 ETF 追蹤</div>
+    <div class="etf-grid">
+      <div class="etf-card">
+        <div class="etf-icon">📈</div>
+        <div class="etf-label">三月累計淨流入</div>
+        <div class="etf-value" style="color:#22c55e;">+$25 億</div>
+        <div class="etf-sub">美國比特幣現貨 ETF 整體</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-icon">📉</div>
+        <div class="etf-label">最新單日淨流出</div>
+        <div class="etf-value" style="color:#ef4444;">-$2.63 億</div>
+        <div class="etf-sub">3/26 · 貝萊德主導流出</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-icon">🏛️</div>
+        <div class="etf-label">IBIT Q1 淨流入</div>
+        <div class="etf-value" style="color:#f7931a;">$84 億</div>
+        <div class="etf-sub">貝萊德 iShares BTC Trust</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-icon">🆕</div>
+        <div class="etf-label">ETH ETF 新品</div>
+        <div class="etf-value" style="color:#627eea;">ETHB</div>
+        <div class="etf-sub">貝萊德質押以太坊 ETF 上市</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DERIVATIVES ALERT ══ -->
+  <div class="section">
+    <div class="section-title">⚠️ 衍生品預警</div>
+    <div class="deriv-alert">
+      <div class="deriv-icon">🚨</div>
+      <div>
+        <div class="deriv-title">重大期權到期衝擊 — BTC & ETH 合計 $22 億美元名義價值</div>
+        <div class="deriv-body">
+          本週比特幣與以太坊合計 <strong>$22 億美元</strong>名義價值的期權合約已到期，市場因此承受顯著波動壓力。大量槓桿多頭持倉於比特幣跌破 $68,000 後遭到強制清算，單日清算金額達 <strong>$2.58 億美元</strong>。市場人士指出，此波下跌同時疊加中東地緣政治緊張局勢，造成雙重利空打壓。技術上，BTC 目前正測試 $66,500 強支撐位，若失守恐引發下一波連環清算。
+        </div>
+        <div class="deriv-badges">
+          <span class="deriv-badge">BTC 期權到期</span>
+          <span class="deriv-badge">ETH 期權到期</span>
+          <span class="deriv-badge">清算 $2.58 億</span>
+          <span class="deriv-badge">$66,500 關鍵支撐</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GAINERS / LOSERS ══ -->
+  <div class="section">
+    <div class="section-title">🏆 今日漲跌幅排行</div>
+    <div class="gl-grid">
+      <div class="gl-card">
+        <div class="gl-header gain">▲ 今日領漲幣種</div>
+        <div class="gl-row">
+          <div class="gl-rank">1</div>
+          <div class="gl-sym">Jito (JTO)</div>
+          <div class="gl-price">$3.82</div>
+          <div class="gl-pct gain">+18.55%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">2</div>
+          <div class="gl-sym">Hyperliquid (HYPE)</div>
+          <div class="gl-price">$18.64</div>
+          <div class="gl-pct gain">+12.31%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">3</div>
+          <div class="gl-sym">Pepe (PEPE)</div>
+          <div class="gl-price">$0.00001024</div>
+          <div class="gl-pct gain">+9.72%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">4</div>
+          <div class="gl-sym">Chainlink (LINK)</div>
+          <div class="gl-price">$14.28</div>
+          <div class="gl-pct gain">+7.83%</div>
+        </div>
+      </div>
+      <div class="gl-card">
+        <div class="gl-header loss">▼ 今日領跌幣種</div>
+        <div class="gl-row">
+          <div class="gl-rank">1</div>
+          <div class="gl-sym">Alchemist AI (ALCH)</div>
+          <div class="gl-price">$0.0821</div>
+          <div class="gl-pct loss">-7.04%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">2</div>
+          <div class="gl-sym">NEAR Protocol (NEAR)</div>
+          <div class="gl-price">$2.38</div>
+          <div class="gl-pct loss">-8.51%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">3</div>
+          <div class="gl-sym">Avalanche (AVAX)</div>
+          <div class="gl-price">$18.92</div>
+          <div class="gl-pct loss">-6.83%</div>
+        </div>
+        <div class="gl-row">
+          <div class="gl-rank">4</div>
+          <div class="gl-sym">Polygon (POL)</div>
+          <div class="gl-price">$0.24</div>
+          <div class="gl-pct loss">-6.22%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NEWS ══ -->
+  <div class="section">
+    <div class="section-title">📰 今日加密市場重要新聞</div>
+
+    <!-- Hero News -->
+    <div class="news-hero">
+      <div class="news-thumb liquidation">💥</div>
+      <div class="news-body">
+        <span class="news-category cat-market">市場動態</span>
+        <div class="news-headline">比特幣、以太坊領跌，加密市場 4 小時內清算金額高達 2.58 億美元</div>
+        <div class="news-summary">
+          3 月 27 日，隨著比特幣跌破 $68,000 關鍵支撐，加密貨幣市場遭遇大規模強制平倉，4 小時內多空合計清算金額高達 <strong>2.58 億美元</strong>，其中多頭損失最為慘重。此次清算主要集中在比特幣與以太坊永續合約，以太坊首次跌破 $2,000 心理關口，報收 $1,981，跌幅達 4.23%。分析師指出，市場杠桿率已降至月內最低，短期超賣訊號顯現，但若地緣政治局勢持續升溫，$66,500 支撐位仍面臨考驗。
+        </div>
+        <div class="news-meta">
+          <span>📌 來源：The Crypto Basic</span>
+          <span>🕐 2026-03-27</span>
+          <span>🏷️ 清算 · 市場波動</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- News Grid -->
+    <div class="news-grid">
+
+      <div class="news-card">
+        <div class="news-thumb geo">🌍</div>
+        <div class="news-body">
+          <span class="news-category cat-geo">地緣政治</span>
+          <div class="news-headline small">中東緊張加劇 + $140 億期權到期，BTC 單日急跌至 $66,500</div>
+          <div class="news-summary">中東停火談判破裂疊加 $140 億美元比特幣期權到期，引爆拋售潮。分析師強調，若 $66,500 支撐失守，下一目標位看向 $63,000。比特幣雖本月仍較 S&P 500 表現強勢（+12% vs -4%），短線不確定性仍高。</div>
+          <div class="news-meta"><span>CryptoTicker · 2026-03-27</span></div>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="news-thumb etf">🏦</div>
+        <div class="news-body">
+          <span class="news-category cat-etf">ETF 資金</span>
+          <div class="news-headline small">貝萊德單日出售 $4,200 萬 BTC、$1.42 億 ETH，ETF 淨流出 $2.63 億</div>
+          <div class="news-summary">3 月 26 日，貝萊德旗下 IBIT 及 ETHA 出現大幅贖回，單日加密 ETF 整體淨流出 $2.63 億美元，為本月最大單日流出。儘管如此，美國比特幣現貨 ETF 三月整體仍淨流入 $25 億，機構長線佈局趨勢未變。</div>
+          <div class="news-meta"><span>LiveBitcoinNews · 2026-03-26</span></div>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="news-thumb reg">⚖️</div>
+        <div class="news-body">
+          <span class="news-category cat-reg">監管</span>
+          <div class="news-headline small">SEC 發布新指引，澄清聯邦證券法對加密資產之適用範圍</div>
+          <div class="news-summary">美國證管會��!M��%�h�o#��o9n � l��#��#:`,�. 9�iy��9�!z k�`��+byb.9��yi��/iz`jy�*9��9d!:hg�b�9k�,���(��#9c!y����9.��nh�� T��9.��nh�c��jyk��nh�� ��ky�c:*�yஹ�i:""y�"yb�zfcy/c�d":)��.#y讹k���)��#9��yl!�d.9o%y��9i&��g����`,�h-8� ��]���]��\��H��]��[Y]H���[���P˙�݈0�����L�L����[���]����]����]����]��\��H��]��X�\����]��\��H��]��][X�[��]��'����#��]���]��\��H��]��X��H����[��\��H��]��X�]Y�ܞH�]Z[��]���g����b�y�b���[���]��\��H��]��ZXY[�H�X[��,�z$"�o��g*9�#y���`e9ab���9a�U��#:i��`"���9/��,깢�9�-����9b�9k�U�9�h�o#�."�n ��]���]��\��H��]��\�[[X\�H��,�z$"�o�����9�"L�9��yg*9�#y���`e9ab�."�n �T�\�\��Z�Y]\�][H�\�;�": �y�j9.���U��"{�#9�$9ஹ�ky�c:i��`"���9/��.�yi*�gb�,깢�9�-����U�9�(�d�{�#9���nm:h$:*"9c��ஹ��z,��.��n-�/���!��$�IH9�:,깢�9f�h,{�#:e��bmyb�9k�U�9��:a�9�"��x� ��]���]��\��H��]��[Y]H���[���[�X��YZ�H0�����L�LL���[���]����]����]����]��\��H��]��X�\����]��\��H��]��][X�X���'�+�]���]��\��H��]��X��H����[��\��H��]��X�]Y�ܞH�]]X�����:(d�b!�����[���]��\��H��]��ZXY[�H�X[��.�yi*�gb�e���o: !y��y�k��][Z�:a��kd9����)�ca��&���9�b;�#Y��H9b!�c�z f��)�am�.�a*�ab:h!O�]���]��\��H��]��\�[[X\�H��.�yi*�gb��.9o��e���o: !yg*9� 9��P�9� �+l9.+y�n�k���#9.#yl!��][Z��]\�[�9��9a��:a��kd9����)��"9���P��"yc�n,��-��.z`,���y�b9�#yaiycl�l!�b,9/���Y��H9b!�c�y�b9�+;�#:/bz #9a*�ab9��:`,�U�H9�b: �y��9ca�"!�,���*9n �h-9�.zgj{�#9o%y�o9�/��9n�����*#�*�� ��]���]��\��H��]��[Y]H���[����[�\��0�����L�L����[���]����]����]����]��\��H��]��X�\����]��\��H��]��][X�X\��]��'���]���]��\��H��]��X��H����[��\��H��]��X�]Y�ܞH�][X\��]��k��)���[���]��\��H��]��ZXY[�H�X[��b�9k�n �h-:`(��
+
+�9i*x�#9�myn���A�慌」，歷史數據揭示反向買入機會</div>
+          <div class="news-summary">恐慌貪婪指數顯示市場已連續 46 天停留在極度恐慌區間，創近年最長紀錄。歷史回測數據顯示，每當指數低於 15 買入，90 天平均報酬率達 +38.4%；當前指數 22 雖已略有回升，但長線佈局者仍視為分批進場良機。</div>
+          <div class="news-meta"><span>SpotedCrypto · 2026-03-26</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-disclaimer">
+    ⚠️ 免責聲明：本報告僅供資訊參考用途，不構成任何投資建議。加密貨幣市場波動劇烈，投資前請審慎評估自身風險承受能力。過去表現不代表未來結果。
+  </div>
+  <div class="footer-brand">🤖 由 Claude Cowork 自動生成｜2026-03-28</div>
+</footer>
+
+<script>
+// ── Fear & Greed Semi-Circle Chart ──
+(function() {
+  const ctx = document.getElementById('fgChart').getContext('2d');
+  const score = 22;
+  const remaining = 100 - score;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [score, remaining, 100],
+        backgroundColor: [
+          '#ef4444',
+          '#1a2030',
+          'transparent'
+        ],
+        borderWidth: 0,
+        circumference: 180,
+        rotation: -90,
+      }]
+    },
+    options: {
+      responsive: false,
+      cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { animateRotate: true, duration: 1200 }
+    }
+  });
+})();
+
+// ── BTC 7-Day Line Chart ──
+(function() {
+  const ctx = document.getElementById('btcLineChart').getContext('2d');
+  const labels = ['3/22', '3/23', '3/24', '3/25', '3/26', '3/27', '3/28'];
+  const prices = [73500, 72800, 71043, 70200, 69438, 66587, 67800];
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+  gradient.addColorStop(0, 'rgba(247,147,26,0.35)');
+  gradient.addColorStop(1, 'rgba(247,147,26,0.00)');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'BTC 收盤價 (USD)',
+        data: prices,
+        borderColor: '#f7931a',
+        backgroundColor: gradient,
+        borderWidth: 2.5,
+        pointBackgroundColor: '#f7931a',
+        pointBorderColor: '#080a10',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#141923',
+          borderColor: '#1e2736',
+          borderWidth: 1,
+          titleColor: '#94a3b8',
+          bodyColor: '#f7931a',
+          callbacks: {
+            label: ctx => ' $' + ctx.parsed.y.toLocaleString()
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#1e2736' },
+          ticks: { color: '#64748b', font: { size: 11 } }
+        },
+        y: {
+          grid: { color: '#1e2736' },
+          ticks: {
+            color: '#64748b',
+            font: { size: 11 },
+            callback: v => '$' + (v/1000).toFixed(0) + 'K'
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ── Market Dominance Donut Chart ──
+(function() {
+  const ctx = document.getElementById('dominanceChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Bitcoin', 'Ethereum', '穩定幣', 'XRP', 'BNB', '其他'],
+      datasets: [{
+        data: [57, 10, 7, 5, 4, 17],
+        backgroundColor: ['#f7931a', '#627eea', '#6b7280', '#346aa9', '#f3ba2f', '#374151'],
+        borderColor: '#080a10',
+        borderWidth: 3,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            color: '#94a3b8',
+            font: { size: 11 },
+            padding: 12,
+            usePointStyle: true,
+            pointStyleWidth: 8,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#141923',
+          borderColor: '#1e2736',
+          borderWidth: 1,
+          titleColor: '#e2e8f0',
+          bodyColor: '#94a3b8',
+          callbacks: {
+            label: ctx => ' ' + ctx.parsed + '%'
+          }
+        }
+      },
+      animation: { animateRotate: true, duration: 1000 }
+    }
+  });
+})();
+</script>
+</body>
+</html>
