@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ 加密貨幣日報 2026-03-30</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #080a10;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 1px solid #1e2738;
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .date-badge {
+    background: linear-gradient(135deg, #f7931a, #e8830a);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .header-title {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #f7931a, #fbbf24, #f7931a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .header-date {
+    margin-left: auto;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── MAIN CONTAINER ── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e2738;
+  }
+
+  /* ── FEAR & GREED ── */
+  .fg-section {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+  .fg-chart-wrap {
+    position: relative;
+    width: 200px;
+    height: 120px;
+    flex-shrink: 0;
+  }
+  .fg-chart-wrap canvas {
+    position: absolute;
+    top: 0; left: 0;
+  }
+  .fg-score-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+  }
+  .fg-score-overlay .score-num {
+    font-size: 40px;
+    font-weight: 800;
+    color: #ef4444;
+    line-height: 1;
+  }
+  .fg-score-overlay .score-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .fg-info { flex: 1; min-width: 220px; }
+  .fg-label {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ef4444;
+    margin-bottom: 8px;
+  }
+  .fg-desc {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+  .fg-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .fg-pill {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .fg-pill.red { background: rgba(239,68,68,0.12); color: #ef4444; border-color: rgba(239,68,68,0.3); }
+  .fg-pill.gray { background: rgba(100,116,139,0.12); color: #94a3b8; border-color: rgba(100,116,139,0.3); }
+  .fg-pill.orange { background: rgba(247,147,26,0.12); color: #f7931a; border-color: rgba(247,147,26,0.3); }
+
+  /* ── PRICE CARDS ── */
+  .price-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media(max-width:900px){ .price-row { grid-template-columns: repeat(3,1fr); } }
+  @media(max-width:600px){ .price-row { grid-template-columns: repeat(2,1fr); } }
+  .price-card {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 14px;
+    padding: 18px 16px;
+    transition: border-color 0.2s;
+  }
+  .price-card:hover { border-color: #334155; }
+  .price-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .coin-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .coin-btc { background: rgba(247,147,26,0.15); color: #f7931a; }
+  .coin-eth { background: rgba(98,126,234,0.15); color: #627eea; }
+  .coin-sol { background: rgba(153,69,255,0.15); color: #9945ff; }
+  .coin-bnb { background: rgba(243,186,47,0.15); color: #f3ba2f; }
+  .coin-xrp { background: rgba(0,170,255,0.15); color: #00aaff; }
+  .coin-name { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+  .coin-ticker { font-size: 11px; color: #64748b; }
+  .coin-price { font-size: 20px; font-weight: 800; color: #e2e8f0; margin-bottom: 4px; }
+  .coin-change {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .change-up { color: #22c55e; }
+  .change-down { color: #ef4444; }
+  .coin-vol { font-size: 11px; color: #64748b; }
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  .spark-bar {
+    flex: 1;
+    border-radius: 2px;
+    min-height: 4px;
+    transition: opacity 0.2s;
+  }
+
+  /* ── CHARTS ROW ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media(max-width:768px){ .charts-row { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .chart-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── ALERT BOX ── */
+  .alert-box {
+    background: linear-gradient(135deg, rgba(247,147,26,0.08), rgba(251,191,36,0.05));
+    border: 1px solid rgba(247,147,26,0.3);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .alert-icon { font-size: 28px; flex-shrink: margin-top: 2px; }
+  .alert-title { font-size: 15px; font-weight: 800; color: #f7931a; margin-bottom: 6px; }
+  .alert-text { font-size: 14px; color: #94a3b8; line-height: 1.7; }
+
+  /* ── MARKET MOVERS ── */
+  .movers-section { margin-bottom: 24px; }
+  .movers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width:600px){ .movers-grid { grid-template-columns: 1fr; } }
+  .movers-card {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .movers-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .movers-card-title.up { color: #22c55e; }
+  .movers-card-title.down { color: #ef4444; }
+  .mover-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #1e2738;
+  }
+  .mover-item:last-child { border-bottom: none; }
+  .mover-left { display: flex; align-items: center; gap: 10px; }
+  .mover-rank {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1e2738;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    flex-shrink: 0;
+  }
+  .mover-name { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+  .mover-cap { font-size: 11px; color: #64748b; }
+  .mover-pct {
+    font-size: 15px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .mover-pct.up { background: rgba(34,197,94,0.12); color: #22c55e; }
+  .mover-pct.down { background: rgba(239,68,68,0.12); color: #ef4444; }
+
+  /* ── NEWS GRID ── */
+  .news-section { margin-bottom: 32px; }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media(max-width:900px){ .news-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:600px){ .news-grid { grid-template-columns: 1fr; } }
+  .news-card {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 14px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .news-card:hover { border-color: #334155; transform: translateY(-2px); }
+  .news-card.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #0d1117, #111827);
+    border-color: #1e3a5f;
+  }
+  @media(max-width:600px){ .news-card.featured { grid-column: span 1; } }
+  .news-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tag-reg { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
+  .tag-etf { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .tag-defi { background: rgba(14,165,233,0.12); color: #38bdf8; border: 1px solid rgba(14,165,233,0.3); }
+  .tag-macro { background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .tag-btc { background: rgba(247,147,26,0.12); color: #f7931a; border: 1px solid rgba(247,147,26,0.3); }
+  .tag-nft { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+  .tag-event { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+  .news-icon { font-size: 28px; margin-bottom: 10px; }
+  .news-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .news-card.featured .news-title { font-size: 17px; }
+  .news-summary {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .news-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #475569;
+  }
+  .news-source {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+  }
+
+  /* ── ETF DATA ── */
+  .etf-section { margin-bottom: 24px; }
+  .etf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:768px){ .etf-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:500px){ .etf-grid { grid-template-columns: 1fr; } }
+  .etf-card {
+    background: #0d1117;
+    border: 1px solid #1e2738;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .etf-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .etf-value { font-size: 22px; font-weight: 800; color: #e2e8f0; }
+  .etf-sub { font-size: 12px; color: #475569; margin-top: 4px; }
+  .etf-flow-neg { color: #ef4444; }
+  .etf-flow-pos { color: #22c55e; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #0d1117;
+    border-top: 1px solid #1e2738;
+    padding: 24px 40px;
+    text-align: center;
+  }
+  .footer-disclaimer {
+    font-size: 11px;
+    color: #374151;
+    margin-bottom: 8px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .footer-credit {
+    font-size: 12px;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .footer-credit strong { color: #6b7280; }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="header">
+  <span class="date-badge">📅 2026 / 03 / 30</span>
+  <div class="header-title">⚡ 加密貨幣日報</div>
+  <div class="header-date">2026年3月30日（星期一）・亞洲早盤</div>
+</div>
+
+<div class="container">
+
+  <!-- ══ FEAR & GREED ══ -->
+  <div class="section-title">🧠 市場情緒</div>
+  <div class="fg-section">
+    <div class="fg-chart-wrap">
+      <canvas id="fgChart" width="200" height="120"></canvas>
+      <div class="fg-score-overlay">
+        <div class="score-num">10</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="fg-info">
+      <div class="fg-label">😱 極度恐慌</div>
+      <div class="fg-desc">
+        恐懼與貪婪指數今日為 <strong style="color:#ef4444">10</strong>，處於「極度恐慌」區間。市場大幅回調，上週五 $14.16B 的比特幣選擇權到期造成劇烈波動，Max Pain 價位 $75,000 遡高於現價，引發大量多頭平倉。投資人情緒處於近期最低水準，歷史下此區間往往出現逢低布局機會。
+      </div>
+      <div class="fg-pills">
+        <span class="fg-pill red">🔴 極度恐慌</span>
+        <span class="fg-pill orange">⚡ 選擇權到期衝擊</span>
+        <span class="fg-pill gray">📉 空方主導</span>
+        <span class="fg-pill gray">🏦 ETF 淨流出</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRICE CARDS ══ -->
+  <div class="section-title">💰 主要幣種行情</div>
+  <div class="price-row">
+
+    <!-- BTC -->
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="coin-icon coin-btc">₿</div>
+        <div>
+          <div class="coin-name">Bitcoin</div>
+          <div class="coin-ticker">BTC / USD</div>
+        </div>
+      </div>
+      <div class="coin-price">$66,545</div>
+      <div class="coin-change change-down">▼ -2.40%</div>
+      <div class="coin-vol">24H 量: $32.1B</div>
+      <div class="sparkline" id="spark-btc"></div>
+    </div>
+
+    <!-- ETH -->
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="coin-icon coin-eth">Ξ</div>
+        <div>
+          <div class="coin-name">Ethereum</div>
+          <div class="coin-ticker">ETH / USD</div>
+        </div>
+      </div>
+      <div class="coin-price">$2,003</div>
+      <div class="coin-change change-down">▼ -0.52%</div>
+      <div class="coin-vol">24H 量: $10.1B</div>
+      <div class="sparkline" id="spark-eth"></div>
+    </div>
+
+    <!-- SOL -->
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="coin-icon coin-sol">◎</div>
+        <div>
+          <div class="coin-name">Solana</div>
+          <div class="coin-ticker">SOL / USD</div>
+        </div>
+      </div>
+      <div class="coin-price">$81.09</div>
+      <div class="coin-change change-down">▼ -1.68%</div>
+      <div class="coin-vol">24H 量: $2.26B</div>
+      <div class="sparkline" id="spark-sol"></div>
+    </div>
+
+    <!-- BNB -->
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="coin-icon coin-bnb">⬡</div>
+        <div>
+          <div class="coin-name">BNB</div>
+          <div class="coin-ticker">BNB / USD</div>
+        </div>
+      </div>
+      <div class="coin-price">$610</div>
+      <div class="coin-change change-down">▼ -1.30%</div>
+      <div class="coin-vol">24H 量: $877M</div>
+      <div class="sparkline" id="spark-bnb"></div>
+    </div>
+
+    <!-- XRP -->
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="coin-icon coin-xrp">✕</div>
+        <div>
+          <div class="coin-name">XRP</div>
+          <div class="coin-ticker">XRP / USD</div>
+        </div>
+      </div>
+      <div class="coin-price">$2.35</div>
+      <div class="coin-change change-down">▼ -0.92%</div>
+      <div class="coin-vol">24H 量: $1.00B</div>
+      <div class="sparkline" id="spark-xrp"></div>
+    </div>
+
+  </div>
+
+  <!-- ══ CHARTS ══ -->
+  <div class="section-title">📊 市場圖表</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-card-title">🟠 BTC 近7日收盤價�(USD）</div>
+      <canvas id="btcLineChart" height="120"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">🍕 市場卡比</div>
+      <canvas id="dominanceChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- ══ ETF DATA ══ -->
+  <div class="section-title">🏦 玾貨 ETF 數據</div>
+  <div class="etf-section">
+    <div class="etf-grid">
+      <div class="etf-card">
+        <div class="etf-label">BTC ETF 總 AUM</div>
+        <div class="etf-value">$85.2B</div>
+        <div class="etf-sub">全球比特幣現貨 ETF 資產管理規模</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-label">BTC ETF 持倉量</div>
+        <div class="etf-value">1,287,258 BTC</div>
+        <div class="etf-sub">約佔流通供應量 6.1%</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-label">BTC ETF 3日淨流入</div>
+        <div class="etf-value etf-flow-neg">-$226M</div>
+        <div class="etf-sub">機構持續獲利了結</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-label">ETH ETF 3日淨流入</div>
+        <div class="etf-value etf-flow-neg">-$40.7M</div>
+        <div class="etf-sub">以太坊 ETF 同樣出現淨流出</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-label">總市值</div>
+        <div class="etf-value">$2.33T</div>
+        <div class="etf-sub">24H 變動: -1.05%</div>
+      </div>
+      <div class="etf-card">
+        <div class="etf-label">BTC 市場占比</div>
+        <div class="etf-value">57.8%</div>
+        <div class="etf-sub">24H 變動: +0.38% 持續上升</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ALERT BOX ══ -->
+  <div class="alert-box">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <div class="alert-title">🗓️ 本週市場焦點：EthCC[9] 以太坊社區大會開幕（3/30–4/2）</div>
+      <div class="alert-text">
+        以太坊社區（EthCC[9]）於今日正式在法國坎城（Cannes）揭幕，持續至 4 月 2 日。此外（3/27）Deribit 平台發生本年度最大規模選擇權到期，名義金額高達 <strong style="color:#f7931a">$141.6 億美元</strong>，Max Pain 設於 $75,000，大幅高於現貨，導致市場劇烈波動，恐懼指數暴跌至 10（極度恐慌）。市場目前處於消化拋壓階段，需觀察 $65,000 支撐是否守住。
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MARKET MOVERS ══ -->
+  <div class="section-title">🏆 漲跌幅榜</div>
+  <div class="movers-section">
+    <div class="movers-grid">
+
+      <!-- GAINERS -->
+      <div class="movers-card">
+        <div class="movers-card-title up">🚀 今日強勢幣種（24H）</div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">1</div>
+            <div>
+              <div class="mover-name">Jito (JTO)</div>
+              <div class="mover-cap">流動性質押協議</div>
+            </div>
+          </div>
+          <span class="mover-pct up">+18.55%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">2</div>
+            <div>
+              <div class="mover-name">Pepe (PEPE)</div>
+              <div class="mover-cap">迷因幣</div>
+            </div>
+          </div>
+          <span class="mover-pct up">+12.30%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">3</div>
+            <div>
+              <div class="mover-name">Injective (INJ)</div>
+              <div class="mover-cap">DeFi 衍生品</div>
+            </div>
+          </div>
+          <span class="mover-pct up">+8.14%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">4</div>
+            <div>
+              <div class="mover-name">Aave (AAVE)</div>
+              <div class="mover-cap">借貸協議</div>
+            </div>
+          </div>
+          <span class="mover-pct up">+6.22%</span>
+        </div>
+      </div>
+
+      <!-- LOSERS -->
+      <div class="movers-card">
+        <div class="movers-card-title down">📉 今日弱勢幣種（24H）</div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">1</div>
+            <div>
+              <div class="mover-name">Alchemist AI (ALCH)</div>
+              <div class="mover-cap">AI 協議</div>
+            </div>
+          </div>
+          <span class="mover-pct down">-7.04%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">2</div>
+            <div>
+              <div class="mover-name">NEAR Protocol (NEAR)</div>
+              <div class="mover-cap">Layer 1</div>
+            </div>
+          </div>
+          <span class="mover-pct down">-5.30%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">3</div>
+            <div>
+              <div class="mover-name">Render (RNDR)</div>
+              <div class="mover-cap">去中心化算力</div>
+            </div>
+          </div>
+          <span class="mover-pct down">-4.58%</span>
+        </div>
+        <div class="mover-item">
+          <div class="mover-left">
+            <div class="mover-rank">4</div>
+            <div>
+              <div class="mover-name">Chainlink (LINK)</div>
+              <div class="mover-cap">預言機</div>
+            </div>
+          </div>
+          <span class="mover-pct down">-3.97%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ NEWS GRID ══ -->
+  <div class="section-title">📰 今日重要新聟</div>
+  <div class="news-section">
+    <div class="news-grid">
+
+      <!-- Featured Story -->
+      <div class="news-card featured">
+        <span class="news-tag tag-btc">比特幣 · 重磅</span>
+        <div class="news-icon">💥</div>
+        <div class="news-title">$141.6 億選擇權到期創年度新高，BTC 單周跌 6%，市場陷入極度恐慌</div>
+        <div class="news-summary">
+          上週五 Deribit 平台爆發本年度規模最大的比特幣選擇權到期事件，名義金額高達 141.6 億美元（$14.16B），約 40% 未平倉量遭到清洗。Max Pain 設在 $75,000 遠高於現貨，引導市場收斂，造成 BTC 單日最大跌幅達 5%，全周下跌逾 6%。恐懼與貪婪指數應聲暴跌至 10，創近半年新低。分析師指出，此為季末常見的期權「重力效應」，市場需 2-3 週消化後才能重啟趨勢。
+        </div>
+        <div class="news-footer">
+          <span class="news-source">📊 CoinDesk / Deribit</span>
+          <span>2026-03-27</span>
+        </div>
+      </div>
+
+      <!-- Story 2 -->
+      <div class="news-card">
+        <span class="news-tag tag-reg">監管</span>
+        <div class="news-icon">🏛️</div>
+        <div class="news-title">美參議院跨黨派達成穩定幣收益監管共識</div>
+        <div class="news-summary">參眾兩黨議員與白宮就《CLARITY Act》中穩定幣收益（Yield）合規框架達成原則性協議，明確持牌穩定幣可合法支付利息，為 DeFi 借貸打開大門。</div>
+        <div class="news-footer">
+          <span class="news-source">🏛️ The Block</span>
+          <span>2026-03-30</span>
+        </div>
+      </div>
+
+      <!-- Story 3 -->
+      <div class="news-card">
+        <span class="news-tag tag-event">以太坊</span>
+        <div class="news-icon">🇫🇷</div>
+        <div class="news-title">EthCC[9] 坎城開幕，Vitalik 演講備受矚目</div>
+        <div class="news-summary">第 9 屆以太坊社區大會（EthCC）於今日在法國坎城正式揭幕，為期 4 天，逾 5,000 N 名时襈樓天出昏政周，Vitalik Buterin 主塌漬欜被視為爞察以太坊跷繚圜的重覠��
+        </div>
+        <div class="news-footer">
+          <span class="news-source">�� EthCC Official</span>
+          <span>2026-03-30<"�7����F�c���F�cࠢ���7F�'�B����F�b6�73�&�Ww2�6&B#��7�6�73�&�Ww2�FrFr�FVf�#�FTf���7���F�b6�73�&�Ww2֖6��#�	��c��F�c��F�b6�73�&�Ww2�F�F�R#�{I{HN�؞X��K�Ni�>h�iI�h��6V7W&�F��Rh�X{�K�>[�>X�n�؞X��[�>X���F�c��F�b6�73�&�Ww2�7V��'�#��4R��r6V7W&�F��RZ�>[�>Y�K�����h�X{��4RF�v�F�G&F��r�Ff�&����6V7W&�F��Rx�.K��Y�x+��inZ�ni[�K�ދ؞��>K�>ynYXn���j����Ή~X+>{[�8~i��[�.ZNY	���K��k�^z�~�(X{�j�~X�.h
+~K�j�^8#��F�c��F�b6�73�&�Ww2�f��FW"#��7�6�73�&�Ww2�6�W&6R#�	�8�&����&W&s��7���7��##b�2�#���7����F�c���F�cࠢ���7F�'�R����F�b6�73�&�Ww2�6&B#��7�6�73�&�Ww2�FrFr�&Vr#�y�>z���7���F�b6�73�&�Ww2֖6��#�)�n�����F�c��F�b6�73�&�Ww2�F�F�R#�4eD2h�z��X�^ikx��X�^[z^K��{XN���{H�XZ^X�Z�n��r���F�c��F�b6�73�&�Ww2�7V��'�#�{��YȾYXnY8i���*�K�Ni�>ZyNY:i�>�Ȅ4eD>�ȞZ�>[�>h�z��XZ�ikX�^ik[z^K��[�{XN���[��*�X�nZ�X�Z�n�*�[�>8X�Z����8K��[z^i���;�X���	k��[�.ZNy�Ny�>z�jni�n��Κinj�[r���~X�Z�ny�>z�K�n��Ή�^yn8#��F�c��F�b6�73�&�Ww2�f��FW"#��7�6�73�&�Ww2�6�W&6R#�	�{�	�{�4eD2�ff�6����7���7��##b�2�#���7����F�c���F�cࠢ���7F�'�b����F�b6�73�&�Ww2�6&B#��7�6�73�&�Ww2�FrFr��7&�#�Y�{z>iK�k+���7���F�b6�73�&�Ww2֖6��#�	�����F�c��F�b6�73�&�Ww2�F�F�R#YȾZ�>[�>i��zhX�Z�n�*�[�>iK�k+�x۾�y��F�c��F�b6�73�&�Ww2�7V��'�#YȾiK�[��Z�>[�>X�>iz^�[~zhj�.YNiK����h�^X�~X�Z�n�*�[�>[�.[��y�NiK�k+�h�j�����[�^z��k9^K�.Z��h�X��{j�h�j�N�z�i�.h�ik����[�^y��jZ�yX�[ވ�YȾy�>z�iKn{x�y�NyihZ�8#��F�c��F�b6�73�&�Ww2�f��FW"#��7�6�73�&�Ww2�6�W&6R#�	�z�	�zrf���6��F��W3��7���7��##b�2�3��7����F�c���F�cࠢ���7F�'�r����F�b6�73�&�Ww2�6&B#��7�6�73�&�Ww2�FrFr�WFb#�UDc��7���F�b6�73�&�Ww2֖6��#�	�8���F�c��F�b6�73�&�Ww2�F�F�R#�%D2x��*�UDb�
+>{��z��K�Θkz�kXX{����j��jx����[�^ik�Y	z+������F�c��F�b6�73�&�Ww2�7V��'�#��~��i8~jȮX�i����i8���~[�.ZNhhX�h8^{y.�I>[�n���j�Nx��[�>x��*�UDbX{�x��
+>{��kz�kXX{����2iz^{J����kXX{���C##d�8.j��jx�h�^�8~K��i���h�X�n8�XX��xiɾXh�[�>[8�z�nyZ^���z؞[�RCcR�iJ�i)z+����8#��F�c��F�b6�73�&�Ww2�f��FW"#��7�6�73�&�Ww2�6�W&6R#�	�8�f'6�FR��fW7F�'3��7���7��##b�2�3��7����F�c���F�cࠢ��F�c���F�cࠣ��F�c�����6��F��W"��ࠣ���)Y)Yd��DU")Y)Y����F�b6�73�&f��FW"#��F�b6�73�&f��FW"�F�66���W"#�)����i��ZY�X8^K�X�>�>���K��jx�h�K��K�^h�^�8~[����8.X�Z�n�*�[�>[�.ZNk:.X�^X�~x8���Θ�[���x��K��K�>��iʮK�n�[X�.8.h�^�8~X�ފ���z��Ί�^K��*����8.h�iȞi[�i9�K�nk�ik�XZΙh�[�.ZN�8~������Zh.iȞX�[z�K�^K�Ni�>h�Z�ni�.i[�i9�x+�k�n8 ���F�c��F�b6�73�&f��FW"�7&VF�B#�	�IbyK�7G&��s�6�VFR6�v�&���7G&��s�yI�h�8;�yI�h�i�.�i>�ɣ##b�2�3��55@���F�c���F�cࠣ�67&�C��)Y)Y)Y)YdT"bu$TTB4TԒ�4�$4�R)Y)Y)Y)Y��gV�7F��ₒ��6��7B7G��F�7V�V�B�vWDV�V�V�D'��B�vft6�'Br��vWD6��FW�B�s&Br���6��7B66�&R���6��7B&V����r��66�&S���Wr6�'B�7G����G�S�vF�Vv��WBr��FF���FF6WG3����FF��66�&R�&V����u���&6�w&�V�D6���#��r6VcCCCBr�r3S#s3�u���&�&FW%v�GF����6�&7V�fW&V�6S����&�FF���#s���Т����F���3���&W7��6�fS�f�6R��7WF�WC�ss"Rr���Vv��3���VvV�C��F�7���f�6R��F���F���V�&�VC�f�6R������F����GW&F���#�V6��s�vV6T�WEV'BrТТғ��Ғ������)Y)Y)Y)Y%D2r�D�Ĕ�R4�%B)Y)Y)Y)Y��gV�7F��ₒ��6��7B7G��F�7V�V�B�vWDV�V�V�D'��B�v'F4Ɩ�T6�'Br��vWD6��FW�B�s&Br���6��7B�&V�2��s2�#Br�s2�#Rr�s2�#br�s2�#rr�s2�#�r�s2�#�r�s2�3uӰ�6��7B&�6W2��sC2�s#�c�S�cSs#�cc�#B�ccc�ccSCUӰ��Wr6�'B�7G����G�S�vƖ�Rr��FF����&V�2��FF6WG3����FF�&�6W2��&�&FW$6���#�r6cs�3r��&6�w&�V�D6���#��7G������6��7Bw&F�V�B�7G��6�'B�7G��7&VFTƖ�V$w&F�V�B����#���w&F�V�B�FD6���%7F���w&v&�#Cr�Cr�#b��2�r���w&F�V�B�FD6���%7F���w&v&�#Cr�Cr�#b���r���&WGW&�w&F�V�C�����&�&FW%v�GF��"�R��f��âG'VR��FV�6����B�����E&F�W3�B�����D&6�w&�V�D6���#�r6cs�3r�����D&�&FW$6���#�r3�r�����D&�&FW%v�GF��"���Т����F���3���&W7��6�fS�G'VR���Vv��3����VvV�C��F�7���f�6R���F���F����&6�w&�V�D6���#�r3S#s3�r��&�&FW$6���#�r333CSRr��&�&FW%v�GF����F�F�T6���#�r3�F6#�r��&�G�6���#�r6cs�3r��6��&6�3����&Vâ�7G����rBr�7G��&r�F���6�U7G&��r���ТТ���66�W3�������w&�C��6���#�r3S#s3�r���F�6�3��6���#�r3cCsC�"r�f��C��6��S��Т�������w&�C��6���#�r3S#s3�r���F�6�3���6���#�r3cCsC�"r��f��C��6��S����6��&6���b���rBr��b���F�f��VB���t�p����֖�c3 �Т�����F����GW&F���ТТғ��Ғ������)Y)Y)Y)YD�Ԕ��4RD��UB)Y)Y)Y)Y��gV�7F��ₒ��6��7B7G��F�7V�V�B�vWDV�V�V�D'��B�vF�֖��6T6�'Br��vWD6��FW�B�s&Br����Wr6�'B�7G����G�S�vF�Vv��WBr��FF����&V�3��t%D2r�tUD�r�u4��r�t$�"r�u�%r�~X[nK�bu���FF6WG3����FF��Sr����"�B��2�r�B�2�#����&6�w&�V�D6���#��r6cs�3r�r3c#vVVr�r3��CVfbr�r6c6&&br�r3fbr�r333CSRu���&�&FW%v�GF��"��&�&FW$6���#�r3�r���Т����F���3���&W7��6�fS�G'VR��7WF�WC�sS�Rr���Vv��3����VvV�C���F�7���G'VR���6�F���v&�GF��r���&V�3���6���#�r3�F6#�r��f��C��6��S����FF��s����&��v�GF��"��Т���F���F����&6�w&�V�D6���#�r3S#s3�r��&�&FW$6���#�r333CSRr��&�&FW%v�GF����&�G�6���#�r6S&S�cr��6��&6�3����&Vâ�7G����rr�7G���&V��s�r�7G��&r�rRp�ТТ�����F����GW&F���#ТТғ��Ғ������)Y)Y)Y)Y5$�Ĕ�U2)Y)Y)Y)Y��gV�7F���G&u7&�Ɩ�W2��B�f�VW2�6���"���6��7B6��F��W"�F�7V�V�B�vWDV�V�V�D'��B��B����b�6��F��W"�&WGW&㰢6��7B����F��������f�VW2���6��7B֖���F��֖����f�VW2���6��7B&�vR����֖�����f�VW2�f�$V6��b����6��7B&"�F�7V�V�B�7&VFTV�V�V�B�vF�br���&"�6�74��R�w7&��&"s��6��7B7B���b�֖��&�vR����#��&"�7G��R�V�v�B�7B�rRs��&"�7G��R�&6�w&�V�B�6���#��&"�7G��R��6�G��s�rs��6��F��W"�V�D6���B�&"���ғ��Р�G&u7&�Ɩ�W2�w7&��'F2r��sC2�s#�c�S�cSs#�cc�#B�ccc�ccSCU��r6cs�3r���G&u7&�Ɩ�W2�w7&��WF�r��##��##�#���S�#����#5��r3c#vVVr���G&u7&�Ɩ�W2�w7&��6��r���RÓ"Ãb�s�Ã"ÃÃ��r3��CVfbr���G&u7&�Ɩ�W2�w7&��&�"r��cS�cCR�c3�c�c�c��c��r6c6&&br���G&u7&�Ɩ�W2�w7&�ׇ'r��"�c�"�SR�"�CR�"�#��"�3R�"�3"�"�3U��r3fbr�����67&�Cࠣ��&�G�����F���
