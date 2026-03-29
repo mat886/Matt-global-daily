@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>國際日報 2026-03-29</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang TC', 'Noto Sans TC', sans-serif;
+      background: #0a0e1a;
+      color: #c8d0e0;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #0d1526 0%, #121e3a 50%, #0a1020 100%);
+      border-bottom: 1px solid #1e3058;
+      padding: 28px 40px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 18px; }
+    .header-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #1a4fd6, #0e9af5);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 20px rgba(26,79,214,.45);
+    }
+    .header-title { font-size: 1.75rem; font-weight: 700; color: #e8f0ff; letter-spacing: .04em; }
+    .header-subtitle { font-size: .85rem; color: #5a7aaa; margin-top: 3px; }
+    .header-date {
+      background: rgba(26,79,214,.18);
+      border: 1px solid rgba(26,79,214,.35);
+      border-radius: 10px;
+      padding: 8px 18px;
+      font-size: .9rem;
+      color: #7baaf5;
+      font-weight: 600;
+      letter-spacing: .03em;
+    }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      background: #0c1220;
+      border-bottom: 1px solid #162040;
+      padding: 14px 40px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .summary-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .82rem; color: #5a7aaa;
+    }
+    .summary-item span.val { color: #d0ddf8; font-weight: 600; }
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #2ecc71;
+      box-shadow: 0 0 6px #2ecc71;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+    /* ── Main grid ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 36px 28px 60px; }
+    .section-title {
+      font-size: 1rem; font-weight: 700; color: #4a7adc;
+      text-transform: uppercase; letter-spacing: .12em;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, #1e3058, transparent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    /* ── News card ── */
+    .card {
+      background: linear-gradient(160deg, #111826 0%, #0e1420 100%);
+      border: 1px solid #1e2d4a;
+      border-radius: 16px;
+      padding: 22px 22px 18px;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.55);
+      border-color: #2a4880;
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+    .card.crisis::before  { background: linear-gradient(to right, #e74c3c, #c0392b); }
+    .card.economy::before { background: linear-gradient(to right, #f39c12, #e67e22); }
+    .card.diplo::before   { background: linear-gradient(to right, #3498db, #2980b9); }
+    .card.military::before{ background: linear-gradient(to right, #8e44ad, #6c3483); }
+    .card.politics::before{ background: linear-gradient(to right, #27ae60, #1e8449); }
+    .card.energy::before  { background: linear-gradient(to right, #e67e22, #d35400); }
+    .card.trade::before   { background: linear-gradient(to right, #16a085, #1abc9c); }
+
+    .card-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .card-tag {
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      padding: 3px 10px; border-radius: 20px;
+      white-space: nowrap;
+    }
+    .tag-crisis  { background: rgba(231,76,60,.18);  color: #e74c3c; border: 1px solid rgba(231,76,60,.3); }
+    .tag-economy { background: rgba(243,156,18,.18); color: #f39c12; border: 1px solid rgba(243,156,18,.3); }
+    .tag-diplo   { background: rgba(52,152,219,.18); color: #3498db; border: 1px solid rgba(52,152,219,.3); }
+    .tag-military{ background: rgba(142,68,173,.18); color: #9b59b6; border: 1px solid rgba(142,68,173,.3); }
+    .tag-politics{ background: rgba(39,174,96,.18);  color: #27ae60; border: 1px solid rgba(39,174,96,.3); }
+    .tag-energy  { background: rgba(230,126,34,.18); color: #e67e22; border: 1px solid rgba(230,126,34,.3); }
+    .tag-trade   { background: rgba(22,160,133,.18); color: #1abc9c; border: 1px solid rgba(22,160,133,.3); }
+
+    .card-time {
+      font-size: .72rem; color: #3a5278;
+      white-space: nowrap; margin-top: 2px;
+    }
+    .card-title {
+      font-size: 1.05rem; font-weight: 700;
+      color: #dde8ff; line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .card-body-text {
+      font-size: .875rem; color: #7090b8; line-height: 1.65;
+    }
+    .card-body-text strong { color: #a8c4e8; }
+
+    .card-metrics {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid #1a2d4a;
+    }
+    .metric {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .metric-label { font-size: .68rem; color: #3a5278; text-transform: uppercase; letter-spacing: .08em; }
+    .metric-value { font-size: .88rem; font-weight: 700; }
+    .metric-value.up   { color: #e74c3c; }
+    .metric-value.down { color: #2ecc71; }
+    .metric-value.neu  { color: #f39c12; }
+    .metric-value.blue { color: #3498db; }
+
+    /* ── Breaking banner ── */
+    .breaking-banner {
+      background: linear-gradient(135deg, rgba(231,76,60,.15), rgba(192,57,43,.08));
+      border: 1px solid rgba(231,76,60,.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .breaking-badge {
+      background: #e74c3c; color: #fff;
+      font-size: .7rem; font-weight: 800;
+      padding: 3px 10px; border-radius: 6px;
+      letter-spacing: .1em; white-space: nowrap;
+    }
+    .breaking-text { font-size: .88rem; color: #d0a0a0; }
+    .breaking-text strong { color: #f5c6c6; }
+
+    /* ── Footer ── */
+    .footer {
+      background: #080c18;
+      border-top: 1px solid #141e30;
+      padding: 22px 40px;
+      text-align: center;
+      font-size: .78rem;
+      color: #2a3d5a;
+    }
+    .footer span { color: #3a5278; }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+(�����屔�(𽡕���)�����((������VC�VC�V@�!H��VC�VC�V@����(�؁�����􉡕���Ȉ�(���؁�����􉡕���ȵ���Ј�(�����؁�����􉡕���ȵ�������~2<𽑥��(�������(�������؁�����􉡕���ȵѥѱ����r/�jo�^����𽑥��(�������؁�����􉡕���ȵ�Չѥѱ���������%�ѕ���������I����Ѓ
+܁5��Ё����������𽑥��(����𽑥��(��𽑥��(���؁�����􉡕���ȵ��є���~N$��c��X����؃��Ѐ̃�r ��䃖���
+܃�b�r�^�𽑥��(𽑥��((͡�K{�VC�VC�V@�MU55Id�	H��VC�VC�V@����(�؁�������յ���䵉�Ȉ�(���؁�������յ���䵥ѕ���(�����؁�������ձ͔��𽑥��(�����������6Ϛf�nӚZ�������(��𽑥��(���؁�������յ���䵥ѕ����~^x���+�^��Zâ{��h������������م������&������𽑥��(���؁�������յ���䵥ѕ����~R�������w��h������������م����ⷚvǢ�w����������^�������𽑥��(���؁�������յ���䵥ѕ����~N ������h������������م������b��&�:��䀬�̔������𽑥��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(��(� c��F�cࠢD�ԃ����̃�
+ߎ(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�������������7�ҿ��#�B7���������(���������������������􉵕�ɥ��م�Ք��������؃�B����������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ����������b��^��B7���������(���������������������􉵕�ɥ��م�Ք�����İ�������������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ����������N+�B�����뚦|������(���������������������􉵕�ɥ��م�Ք���Ք����ȃ�z�������(��������𽑥��(������𽑥��(����𽑥��((���������и�UL�
+�����QɅ������(�����؁�����􉍅ɐ��Ʌ����(�������؁�����􉍅ɐ������Ȉ�(�������������������􉍅ɐ�х��х���Ʌ�����~�t���[�ꐃ
+܃����bL������(�������������������􉍅ɐ�ѥ�������ش�̴�׾�#��G�r��$������(������𽑥��(�������؁�����􉍅ɐ�ѥѱ�����;�ⷖ�Ӧ�;����bO���"���k�6S�V��Úr�޿��k�r[��3�^s���n{�B��̀���𽑥��(�������؁�����􉍅ɐ�����ѕ�Ј�(����������;�r/�ʇ�V����ɽ����>ˢ�&���w����&����ɽ����"�ⷖr/�&�����B���ɽ�����W��/������ɽ����r���Ӧ�8�=
+�������"'��3�r����3�
+��w��K��Úr�����k�~랒;���;�r/�r��c��W�f�����k�����ǒ�7��_�>Ӗ�W�+��+����O����+�*o��W��!%A���'�/��ךRۦ^s����3��7�ⷦ^s���j���/�n{�B������ɽ������B�~��X�������ɽ�����ⷚZ�&碦W��;�r/�ZÞf��ߞj�M��ѥ�����ă����~��
+�3�R����N7���^'�>��7�(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������7�ⷦ^s���>���������(���������������������􉵕�ɥ��م�Ք���Ԉ����������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ����������ⷖr/��>���Ӗ�{�:������(���������������������􉵕�ɥ��م�Ք���ݸ����ĸ��������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ����������ⷖr/����bO���޻�� Ĵ˚r#��$������(���������������������􉵕�ɥ��م�Ք���ݸ���Ȱ��؃�������(��������𽑥��(������𽑥��(����𽑥��((���������Ը�
+�����Եe��ȁA�������(�����؁�����􉍅ɐ��������(�������؁�����􉍅ɐ������Ȉ�(�������������������􉍅ɐ�х��х����������~��~̃�ⷖr,�
+܃�R���X������(�������������������􉍅ɐ�ѥ�������ش��������(������𽑥��(�������؁�����􉍅ɐ�ѥѱ����ⷖr/����6��S�/��S��Ӣ�#�*�����?��랮/��k�n�.W��+�'���������f���랢Ǧr���B𽑥��(�������؁�����􉍅ɐ�����ѕ�Ј�(�����������r/����G�������r�̃�r#�&�����6��S�/��S��Ӣ�?�*�� ���Ѓ�L�������'��3�k����k���.W��+�����f����v�����"�>+��������f�������ɽ�����'�"ÞV��R������ⷖr/��7��[����bO���޻��˦P���ɽ���ĸȃ���;����ɽ�����3��7�����B�������6_�~O�"�ⷖr/��c�N��r��2_�곚r����3�ǖB3�&�����ڷ��ߒ�o�'�>#�����k���ǖ2[�ng�
++����bO�(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ������������B����bO���޸������(���������������������􉵕�ɥ��م�Ք���Ք���ĸȃ���;�������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������?�*��Ӧf@������(���������������������􉵕�ɥ��م�Ք���Ԉ����ۊL����������(��������𽑥��(������𽑥��(����𽑥��((���������ظ����Ʌ��I�͕�ٔ����(�����؁�����􉍅ɐ���������(�������؁�����􉍅ɐ������Ȉ�(�������������������􉍅ɐ�х��х�����������~J䃞�;�r,�
+܃��O��|������(�������������������􉍅ɐ�ѥ�������ش�̴��������(������𽑥��(�������؁�����􉍅ɐ�ѥѱ�������[�r�ڷ�2�"��:��7��+��3����Ӧ�[�ꛚ*�Σ��Ӗ��>����6��𽑥��(�������؁�����􉍅ɐ�����ѕ�Ј�(������������[�r�̃�r �����^�������ڷ�2�~��[�"��:�Z����ɽ���̸�ÊL̸�Ԕ���ɽ�����3�:����ro��/��Ӣ�W��Ò�+�r_��w����Ǧ~���ۢ3�"��̀̃�r ��܃�^���3�ꓚbO�N��*�Σ��Ӗ�W�&7�6���j���:��[�ꛞ�������ɽ���������ɽ�����3����C��˖��W�f�k���C�3�ȃ�r#�˖>��&���r#��x�ĸ̗��3�
+����ȃ��Ѐ̃�r#���r�����˖���o��c�no��˖���ȃ�/�r#����æ���:��+��������ɽ���������ɽ����(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ������������
+��~�G�"��:������(���������������������􉵕�ɥ��م�Ք���Ԉ�̸�ÊL̸�Ԕ������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������Ӗ��6�����:������(���������������������􉵕�ɥ��م�Ք������Ȕ������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������c�no��æ���:������(���������������������􉵕�ɥ��م�Ք��������������(��������𽑥��(������𽑥��(����𽑥��((���������ܸ�9Q<����ɽ������(�����؁�����􉍅ɐ�����ѥ�̈�(�������؁�����􉍅ɐ������Ȉ�(�������������������􉍅ɐ�х��х������ѥ�̈��~��~胚�C��ȃ
+܃�2_��������(�������������������􉍅ɐ�ѥ�������ش�̴��������(������𽑥��(�������؁�����􉍅ɐ�ѥѱ����2_����Ӗ�Ǿ�k��C��˦bˢ�o�R����Ӗ�x������o��C�n�.K��W��/���6ߖ��2�𽑥��(�������؁�����􉍅ɐ�����ѕ�Ј�(���������2_����c�n�V����ɽ�������/��F�&����ɽ����r��������{�"��f����Ӗꛖ�ǖF+��3�����뚶C��˞n�r/�>+�*��.�����r/�b˚R��������Ѓ��Ӗ����x����ɽ���������ɽ�����"����B3�f��3��C��˦�c��;���.K��W��w�f������6S�*�����w�6ߖ��2˚�ߖ���"���3���RǞj������o��ߖr/��[�Vߢ�����~?�z_�3���?�*����7��7��/��3�.W��3�⛖�ߢ�������w���"�2_���bˢ�o�ߢ����^s���W�r/����B�.K��G�"��*���!1���ɹ׾�'�R���s�n��ޛ�>ϖ���N+�3�K�>Î(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������C��˦bˢ�o�R����Ӗ�x������(���������������������􉵕�ɥ��م�Ք���ݸ������������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������ߖr/��/���������(���������������������􉵕�ɥ��م�Ք���Ԉ��.K��W���������(��������𽑥��(������𽑥��(����𽑥��((���������ก������QɅ��������ѥ������(�����؁�����􉍅ɐ���������(�������؁�����􉍅ɐ������Ȉ�(�������������������􉍅ɐ�х��х�����������~2@����B�
+܃��o�'�> ������(�������������������􉍅ɐ�ѥ�������ش�̴��������(������𽑥��(�������؁�����􉍅ɐ�ѥѱ�����+�r_�"Ò�/��w�N+���B��o�'�>#��k��[�*��C�Ⳗ����_�V�N����ӚZÒ�8𽑥��(�������؁�����􉍅ɐ�����ѕ�Ј�(����������[�V3�*��3�+�V�N����Ӗ�W�ro�/��ǖF+��C�⳾�0���؃��Ӗ��B�����_�V�N�皂����3�����ɽ�������Ӛr��8���ɽ�����3�
+����3����no��Ӓ�/��G��ۢ3�ⷚvǢ�w�����"C����ߢ"�6ߖ��2˚�ߖ���"��/�jӦ7�>_�b��3�
+���{��'�v{��˖r/��ۢ2ۢF'��>��>_�nþ�o������ɽ���ذ��ÊL������f����ɽ��������Ȱ�����B���;��j�2ۢF'�Vg�Jg��ӢZ��⿾�3�vǦv{�2ۖ���Ԕ��>_�΋�>+���w�f��^s�������;�r/��ۖ귖�ϖv���ʃ��{�*�����ɽ���İ������;����ɽ����(������𽑥��(�������؁�����􉍅ɐ����ɥ�̈�(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ��������������_�V�N��C��������(���������������������􉵕�ɥ��م�Ք���������ӚZÒ�8������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ����������Vg�2ۢF$������(���������������������􉵕�ɥ��م�Ք���Ԉ�ذ��ÊL������f�������(��������𽑥��(���������؁�����􉵕�ɥ���(���������������������􉵕�ɥ�����������;�r/��ۖ귦y�!z,�9����[����[��\��H�Y]�X�]�[YH\���K
+L��[����]����]����]�����]��KKH�ܚYKO���]��KKH��۝Z[�\�KO���KKH8�d8�d8�d���T�8�d8�d8�dKO��]��\��H����\����9�,H�]YH���ܚ�9�'��$0�����L�L�H	������g	�����[��,����y/����;�&�[�^�Y\�H0��ӓ�0��Ӑ��0����0���]]\��0��ZܘZ[�X[�[�0���U�0��[�^�Y\�H0���ܛ�[����[����]����؛�O���[�
