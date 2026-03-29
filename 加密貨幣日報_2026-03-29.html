@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ 加密貨幣日報 2026-03-29</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #080a10;
+    --bg2: #0d1117;
+    --bg3: #161b27;
+    --card: #1a2035;
+    --border: #2a3450;
+    --text: #e2e8f0;
+    --muted: #8899bb;
+    --btc: #f7931a;
+    --eth: #627eea;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Helvetica Neue', Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2035 50%, #080a10 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(247,147,26,0.12), transparent);
+  }
+  .date-badge {
+    display: inline-block;
+    background: rgba(247,147,26,0.15);
+    border: 1px solid rgba(247,147,26,0.35);
+    color: var(--btc);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #f7931a, #fbbf24, #f7931a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    position: relative;
+  }
+  .header-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
+    position: relative;
+  }
+  .header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .header-stat {
+    text-align: center;
+  }
+  .header-stat .val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .header-stat .lbl {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── FEAR & GREED ─── */
+  .fg-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .fg-chart-wrap {
+    position: relative;
+    width: 180px;
+    height: 100px;
+    flex-shrink: 0;
+    margin: 0 auto;
+  }
+  .fg-chart-wrap canvas {
+    position: absolute;
+    top: 0; left: 0;
+  }
+  .fg-center {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .fg-score {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+  }
+  .fg-info {
+    flex: 1;
+    min-width: 220px;
+  }
+  .fg-label {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .fg-desc {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .fg-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .pill-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .pill-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+  .pill-muted { background: rgba(136,153,187,0.1); color: var(--muted); border: 1px solid var(--border); }
+
+  /* ─── PRICE ROW ─── */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px 14px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card:hover { border-color: #3a4560; }
+  .price-card .coin-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .coin-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .coin-btc { background: rgba(247,147,26,0.18); color: var(--btc); }
+  .coin-eth { background: rgba(98,126,234,0.18); color: var(--eth); }
+  .coin-sol { background: rgba(168,85,247,0.18); color: #a855f7; }
+  .coin-bnb { background: rgba(234,179,8,0.18); color: var(--yellow); }
+  .coin-xrp { background: rgba(6,182,212,0.18); color: var(--cyan); }
+
+  .coin-name { font-weight: 700; font-size: 14px; }
+  .coin-sym { font-size: 11px; color: var(--muted); }
+
+  .coin-price {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .coin-change {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .coin-change.up { color: var(--green); }
+  .coin-change.down { color: var(--red); }
+  .coin-volume {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Sparkline bars */
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 28px;
+    margin-top: 10px;
+  }
+  .spark-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+    opacity: 0.7;
+  }
+
+  /* ─── CHARTS ROW ─── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .chart-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-canvas-wrap {
+    position: relative;
+    height: 200px;
+  }
+
+  /* ─── ALERT BOX ─── */
+  .alert-box {
+    background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(247,147,26,0.05));
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .alert-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .alert-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fca5a5;
+    margin-bottom: 6px;
+  }
+  .alert-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .alert-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .alert-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(239,68,68,0.15);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.25);
+  }
+
+  /* ─── MOVERS ─── */
+  .movers-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 600px) { .movers-row { grid-template-columns: 1fr; } }
+  .movers-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .movers-header {
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .movers-header.up { color: var(--green); }
+  .movers-header.down { color: var(--red); }
+  .mover-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(42,52,80,0.5);
+  }
+  .mover-item:last-child { border-bottom: none; }
+  .mover-name { font-size: 13px; font-weight: 700; }
+  .mover-sym { font-size: 11px; color: var(--muted); }
+  .mover-pct {
+    font-size: 14px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+  }
+  .mover-pct.up { background: rgba(34,197,94,0.12); color: var(--green); }
+  .mover-pct.down { background: rgba(239,68,68,0.12); color: var(--red); }
+
+  /* ─── NEWS GRID ─── */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 900px) { .news-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 580px) { .news-grid { grid-template-columns: 1fr; } }
+  .news-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .news-card:hover {
+    border-color: #3a4560;
+    transform: translateY(-2px);
+  }
+  .news-card.featured {
+    grid-column: span 1;
+    background: linear-gradient(135deg, #1a2035, #1e2840);
+    border-color: rgba(247,147,26,0.3);
+  }
+  .news-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .tag-market { background: rgba(247,147,26,0.15); color: var(--btc); border: 1px solid rgba(247,147,26,0.3); }
+  .tag-policy { background: rgba(98,126,234,0.15); color: var(--eth); border: 1px solid rgba(98,126,234,0.3); }
+  .tag-etf { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .tag-defi { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .tag-macro { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .tag-onchain { background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
+  .tag-altcoin { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+  .news-headline {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .news-card.featured .news-headline { font-size: 16px; }
+  .news-body {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #5a6880;
+    margin-top: auto;
+  }
+  .news-source { font-weight: 600; }
+
+  /* ─── ETF STATS ─── */
+  .etf-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .etf-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .etf-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .etf-value {
+    font-size: 22px;
+    font-weight: 800;
+  }
+  .etf-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .etf-value.neg { color: var(--red); }
+  .etf-value.pos { color: var(--green); }
+  .etf-value.gold { color: var(--btc); }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    text-align: center;
+  }
+  .footer-disc {
+    font-size: 11px;
+    color: #445060;
+    max-width: 700px;
+    margin: 0 auto 10px;
+    line-height: 1.6;
+  }
+  .footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(136,153,187,0.08);
+    border: 1px solid var(--border);
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* ─── SEPARATOR ─── */
+  .sep { margin-bottom: 24px; }
+
+  /* ─── Market cap banner ─── */
+  .market-banner {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .market-banner-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 160px;
+  }
+  .mb-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .mb-val { font-size: 20px; font-weight: 800; margin-top: 4px; }
+  .mb-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<div class="header">
+  <div class="date-badge">📅 2026 年 3 月 29 日・星期日</div>
+  <h1>⚡ 加密貨幣日報</h1>
+  <div class="header-sub">每日幣圈市場彙整・由 Claude Cowork 自動生成</div>
+  <div class="header-stats">
+    <div class="header-stat">
+      <div class="val" style="color:var(--red)">極度恐慌</div>
+      <div class="lbl">市場情緒</div>
+    </div>
+    <div class="header-stat">
+      <div class="val">$2.37兆</div>
+      <div class="lbl">總市值</div>
+    </div>
+    <div class="header-stat">
+      <div class="val">$66,194</div>
+      <div class="lbl">BTC 現價</div>
+    </div>
+    <div class="header-stat">
+      <div class="val" style="color:var(--btc)">55.99%</div>
+      <div class="lbl">BTC 主導率</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════
+       FEAR & GREED INDEX
+  ══════════════════════════════════════════ -->
+  <p class="section-title">😱 恐懼與貪婪指數</p>
+  <div class="fg-section">
+    <div class="fg-chart-wrap">
+      <canvas id="fgChart" width="180" height="100"></canvas>
+      <div class="fg-center">
+        <div class="fg-score">13</div>
+      </div>
+    </div>
+    <div class="fg-info">
+      <div class="fg-label">🔴 極度恐慌（Extreme Fear）</div>
+      <div class="fg-desc">
+        5nYh{΋*�Z��h�~i[�K��iz^��i[��7G&��s�2���7G&��s����[{.�
+>{���7G&��s�CbZJ���7G&��s����K��X��8�j[^[�nhhX�8�X��i>���X�ReE�[J�k�K�^K�ni��[~�
+>{��hhX�{H��N8.j�Nx��[�>�xΈ{2Ccd�
+R��JC��۾�1Dă����ꛦ�N��+��C��_��3����Ӓ�����2��3��;��߾�3�rÞޏ�R�����+��ך�.��*��*�./�R���O�*o�(������𽑥��(�������؁�����􉙜�����̈�(������������������������������ɕ����~RЃ��זꛚC�0������(������������������������������啱��܈�����؃���������(��������������������������������ѕ����2�V��������������(��������������������������������ѕ�����ߖ>˒�;��4������(������𽑥��(����𽑥��(��𽑥��((��������VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�V@(�������AI%
+�I=\(���VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�VC�V@����(�����������͕�ѥ���ѥѱ����~J�����揞⻢�3����(���؁�������ɥ����ɥ���((���������	Q����(�����؁�������ɥ�����ɐ��(�������؁�����􉍽��������Ȉ�(���������؁�����􉍽��������������ь���
+�𽑥��(�����������(�����������؁�����􉍽���������	�э���𽑥��(�����������؁�����􉍽����崈�	Q𽑥��(��������𽑥��(������𽑥��(�������؁�����􉍽����ɥ������屔􉍽����مȠ���ь�����ذ���𽑥��(�������؁�����􉍽������������ݸ���Z���ȸ����� �ѣ��$𽑥��(�������؁�����􉍽���ٽ�յ����Ѡ��"C�ꓦ?��h����𽑥��(�������؁���������ɭ������������ɬ��ь��(�����������������Ʌѕ����)L����(������𽑥��(����𽑥��((���������Q ����(�����؁�������ɥ�����ɐ��(�������؁�����􉍽��������Ȉ�(���������؁�����􉍽��������������Ѡ��:x𽑥��(�����������(�����������؁�����􉍽���������ѡ�ɕմ𽑥��(�����������؁�����􉍽����崈�Q 𽑥��(��������𽑥��(������𽑥��(�������؁�����􉍽����ɥ������屔􉍽����مȠ���Ѡ����Ȱ���𽑥��(�������؁�����􉍽���������������ZȀ�ĸ�ؗ�� �ѣ��$𽑥��(�������؁�����􉍽���ٽ�յ����Ѡ��"C�ꓦ?��h��и�𽑥��(�������؁���������ɭ������������ɬ��Ѡ��𽑥��(����𽑥��((���������M=0����(�����؁�������ɥ�����ɐ��(�������؁�����􉍽��������Ȉ�(���������؁�����􉍽�������������ͽ����^8𽑥��(�����������(�����������؁�����􉍽���������M�����𽑥��(�����������؁�����􉍽����崈�M=0𽑥��(��������𽑥��(������𽑥��(�������؁�����􉍽����ɥ������屔􉍽���荄��՘܈���ȸ��𽑥��(�������؁�����􉍽���������������ZȀ����ܗ�� �ѣ��$𽑥��(�������؁�����􉍽���ٽ�յ����Ѡ��"C�ꓦ?��h�̸�𽑥��(�������؁���������ɭ������������ɬ�ͽ���𽑥��(����𽑥��((���������	9����(�����؁�������ɥ�����ɐ��(�������؁�����􉍽��������Ȉ�(���������؁�����􉍽���������������������𽑥��(�����������(�����������؁�����􉍽���������	9𽑥��(�����������؁�����􉍽����崈�	9𽑥��(��������𽑥��(������𽑥��(�������؁�����􉍽����ɥ������屔􉍽����مȠ��啱��ܤ�����ĸ��𽑥��(�������؁�����􉍽������������ݸ���Z��LK�NI{�"�;�"O�]���]��\��H���[�]��[YH���9�$9.�:a���&�K���]���]��\��H��\��[�H�YH��\��X������]����]����KKH�KO��]��\��H��X�KX�\����]��\��H���[�ZXY\����]��\��H���[�ZX�ۈ��[�^����%O�]���]���]��\��H���[�[�[YH����]���]��\��H���[�\�[H����]����]����]���]��\��H���[�\�X�H��[OH���܎��\�KX�X[�H��K���]���]��\��H���[�X�[��H\�����
+�K���{�"�;�"O�]���]��\��H���[�]��[YH���9�$9.�:a���&�
+����]���]��\��H��\��[�H�YH��\��^����]����]�����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��T����8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���\��H��X�[ۋ]]H��'��9g%�(j9b!������]��\��H��\��\��ȏ���KKH��
+�Y^H[�H�\�KO��]��\��H��\�X�\����]��\��H��\�]]H����[��[OH���܎��\�KX��H�������[����:/�H
+�9��z-l9b��"T�;�"B��]���]��\��H��\�X�[��\�]ܘ\����[��\�YH���[�P�\�����[��\ς��]����]����KKH�Z[�[��H۝]KO��]��\��H��\�X�\����]��\��H��\�]]H��'�i�9n �h-9..�l#����]���]��\��H��\�X�[��\�]ܘ\����[��\�YH��Z[�[��P�\�����[��\ς��]����]�����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d�PT��U�S��T��8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���\��H��X�[ۋ]]H��'��9n �`/9���)�O���]��\��H�X\��]X�[��\����]��\��H�X\��]X�[��\�X�\����]��\��H�X�[����/yb�9k�,�9nh�n �`/�]���]��\��H�X�]�[������9aa��]���]��\��H�X�\�X�����LˌIH
+�
+O�]����]���]��\��H�X\��]X�[��\�X�\����]��\��H�X�[�����9..�l#����]���]��\��H�X�]�[��[OH���܎��\�KX��H��MK�NIO�]���]��\��H�X�\�X�����9n �`/	K���9aa��]����]���]��\��H�X\��]X�[��\�X�\����]��\��H�X�[����9�/y.�9�$�a���]���]��\��H�X�]�[��L
+Џ�]���]��\��H�X�\�X���aj9� �b�9k�,�9nh�n �h-�]����]���]��\��H�X\��]X�[��\�X�\����]��\��H�X�[�����:-�HU:-�9naO�]���]��\��H�X�]�[��[OH���܎��\�K\�Y
+H��M
+ˍIO�]���]��\��H�X�\�X���U�	L���O�]����]����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d�U����8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���\��H��X�[ۋ]]H��'��9��,�U�:,��a�y�`yd${�":/�H�9��yd":*";�"O���]��\��H�]�\��ȏ��]��\��H�]�X�\����]��\��H�]�[X�[����U����y��9�`za���]���]��\��H�]�]�[YH�Yȏ�I�L�O�]���]��\��H�]�\�X���d*��̍�9�m���HIL��MO�]����]���]��\��H�]�X�\����]��\��H�]�[X�[����U�9�/HUSO�]���]��\��H�]�]�[YH����MK�LЏ�]���]��\��H�]�\�X���LH9��9g"���,���U��]����]���]��\��H�]�X�\����]��\��H�]�[X�[��UU����y��9�`za���]���]��\��H�]�]�[YH�Yȏ�I��SO�]���]��\��H�]�\�X����̍�9e����HINK��H9bmz/�y�'���:j��]����]���]��\��H�]�X�\����]��\��H�]�[X�[���X�ԛ���P�U�]���]��\��H�]�]�[YH����h&:-�O�]���]��\��H�]�\�X���LH9�+�*"9��9�`yaiH
+����]����]����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d�ST����8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO��]��\��H�[\�X�����]��\��H�[\�ZX�ۈ����;�#��]���]���]��\��H�[\�]]H���$9.⹥�za�yi)�.��.���$TLH9kh�n��`n9����"�b,9�'��d9�����MK��9a!9a`��!y��k�9�h��]���]��\��H�[\�X��H����9�"��9��{�"U��;�"{�#\�X�]9k�9�$���9nm:)���(y� 9i)��9kh�n��`n9����"�b,9�'��d9���#9d#y��`�y`/:`e��ۙωMK��9a!9a`����ۙϻ�#9��z$����9c�U9d"9�!;�#9�!zfi9.�9�$��`:`/�
+	H9�*�nl�`"za��� ��������9� 9i)����n��"X^Z[��"z*+y����ۙω
+�K���ۙϻ�#9�-� #��9��yg*9�d9��bcy/��-�9�-	
+��͈9�+���;�#:)�9�o��ۙω�9a!9i&�h+y�!y�����ۙϸ� ���bcyn �h-9g*	
+���9l"��`��+���;�&�d#9�`�/"�g,9���(gy�z`,�aiy�+9.�9`"��";�#9b�9b��n �h-:`o�f�����e+�� ��������9c�. 9��zgh��#��ۙϐ�Q�SQO���ۙψ9.��nh�.⹥�{�"�̎{�"z)��c����9�m���9�/y�`z`&�a����ۙόM�O���ۙψ9�9.��nh��#9��y�'����h��`/9o����9�#�� ���]���]��\��H�[\�]Y�ȏ���[��\��H�[\�]Yȏ�'�%9kh�n���d9����[����[��\��H�[\�]Yȏ�'��9g,9���h�:f����[����[��\��H�[\�]Yȏ�'�$�9.��nh�)��c����[����]����]����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d�PT��USՑT�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���\��H��X�[ۋ]]H��'�9�,�-�9nay���(c;�"�;�"O���]��\��H�[ݙ\��\��ȏ���KKH��Z[�\��KO��]��\��H�[ݙ\��X�\����]��\��H�[ݙ\��ZXY\�\��'��9�,�naybcyf���]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH���]��]���]��\��H�[ݙ\�\�[H�����]����]���]��\��H�[ݙ\�\�\�����
+�N�MIO�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH����]���]��\��H�[ݙ\�\�[H����]����]���]��\��H�[ݙ\�\�\�����
+�K���O�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH��]\�][O�]���]��\��H�[ݙ\�\�[H��U�]����]���]��\��H�[ݙ\�\�\�����
+�K���O�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH���]��[��\��]���]��\��H�[ݙ\�\�[H�����]����]���]��\��H�[ݙ\�\�\�����
+̋���O�]����]����]����KKH���\��KO��]��\��H�[ݙ\��X�\����]��\��H�[ݙ\��ZXY\��ۈ��'��H:-�9naybcyf���]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH���\�[��]���]��\��H�[ݙ\�\�[H���T�S��]����]���]��\��H�[ݙ\�\��ۈ����L�K��O�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH���]O�]���]��\��H�[ݙ\�\�[H���UO�]����]���]��\��H�[ݙ\�\��ۈ����LM���O�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH��[�[Z\�RO�]���]��\��H�[ݙ\�\�[H��S��]����]���]��\��H�[ݙ\�\��ۈ����Mˌ
+	O�]����]���]��\��H�[ݙ\�Z][H���]���]��\��H�[ݙ\�[�[YH������]���]��\��H�[ݙ\�\�[H������]����]���]��\��H�[ݙ\�\��ۈ����LK�NIO�]����]����]�����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��U��ԒQ�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���\��H��X�[ۋ]]H��'��9.⹥�ynh�g":a�zn繥�: g����]��\��H��]��YܚY����KKH�\�N��X]\�YKO��]��\��H��]��X�\��X]\�Y����[��\��H��]��]Y�Y�[X\��]��'��9n �h-��[���]��\��H��]��ZXY[�H����	MK��9a!9kh�n��`n9����"��d9���&���:-�:!��	
+����#9i&�h+y�#yi,y�f:a�O�]���]��\��H��]��X��H��\�X�]9g*�9�"��9��yk�9�$���9nm9� 9i)�)���(ykh�n��`n9����"��d9���#9d#y��a�zhcz`/�	MH9a!9a`��#9� 9i)����n�	
+�K:`h:j�9��9��`�x� �n �h-9g*9�d9��bcz-�9�-	
+��ͻ�#:)�9�o:`/�	�9a!9i&�h+ynl�`"{�#��9aj9i*y."�-�
+Ix� �b!���9n*�+i�db��#9o�9�d9����b�yl&��*��d9�g�� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H�����X�\���QV���[����[���̍���[����]����]����KKH�\��KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�[XXܛȏ���;�#�9g,9����/������[���]��\��H��]��ZXY[�H��/"�(gy�z`,�aiy�+9.�9�";�#:g#y�/��*:#,��m�l�yc��f.���9ca�`o�f�����e+��]���]��\��H��]��X��H��/"�.�y.��l#yl�y� y�9n�����#:h��ob:"!��(y.���g��.���nl���aj9� �a�z)�z"*�`b�-�����#9�����y`�y�/9."��,�n-�b�zh�:f��,���(�aj9��."��*��#9b�9k�n �h-:-��f�9."�-�:!��	����9aa�n �`/8� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H��H��[��\X�X���[����[���̎��[����]����]����KKH�\��KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�Y]���'��U���[���]��\��H��]��ZXY[�H��g"���,���� QU8� T��U�9."y��z`(��9��9�`ya��#9�g��������`�)�9�&��]���]��\��H��]��X��H���9�"��9��{�#9g"���,����U���U�9aj:gh�c!9o����9�`ya�� �UU�9e����y�`ya�	NK��H9bmz/�y�"9��:j�;�#UH9/e	M��{�&Е�U�9�m:j�USH9��y� H	MK�Lл�#�X�ԛ���P�ULH9.�zc!9o��	
+9a!9�h�d$y�`yaix� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H��H���\����[����[���̍���[����]����]����KKH�\�
+KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�\�X�H������#�9��z)����[���]��\��H��]��ZXY[�H����[��\�H9c�yl#x�"��\�]HX�8�"�/�* ��b;�#9�!��jyk��nh��-��⹨�y�/��#yk���*9�-��]���]��\��H��]��X��H����[��\�H9�h�o#��o:(j: l��#��#9�nz*ex�"��\�]HX�8�"�� 9��9�b9�+9.+zfd9b-��jyk��nh�kl��k��9��y�/��#:*�yஹ�i:""yl!�bgyij�g"��*9�-�`#�`c�� y�"y�jyk��nh��l�o���-����9�"�b*{�#9.)�do9�l������z !za�y��9k�z)����:e�9��y���� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H����[�\����[����[���̎O��[����]����]����KKH�\�
+HKO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�[ۘ�Z[���'�%�:c�9."���[���]��\��H��]��ZXY[�H���\��H:)��a�HL�M��T���#	X��9论*�yஈM�9`"�a�y�d:c(�c!y.b�. �]���]��\��H��]��X��H��c�9."�*����yd�H�X��9���g,��#�\��H9m칠h�o�yam�.+y. 9`"��i9bcz`kya�y�d:c(�c!y�L�M��T��9kf9c幫"�fd;�#9�+9�(z)��a�y.��.��o%y�o9n �h-9l#y�jyk��nh�k�y��z"!�d":)�������y�9n�����*#�*�� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H����[�\����X����[����[���̎��[����]����]����KKH�\�
+�KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�X[��[���'�$�9.��nh�)��c����[���]��\��H��]��ZXY[�H���Q�SQH9.⹥�z)��c���`z`&�a��M�{�#9��y�'����h��h�:f��."�ca��]���]��\��H��]��X��H���[YQ�H:h!y���Q�SQH9���9�"�H9��yg��(c9i)�)���(y.��nh�)��c���#:)��c��a����9�m���9�﹧"y�`z`&�a���M�{�#9ஹ�+:`,y� :j�:)��c����9/��� �b!���9n*���:a����y�'�ai�c�� �ya���,��h���#9n�+l:e�9��:c�9."�/by���b�yd$x� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H��QV���S�O��[����[���̎O��[����]����]����KKH�\�
+�KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�YY�H��'�HQ�O��[���]��\��H��]��ZXY[�H���]��"���"ye����y��9�,�`/�N	{�#9�$9ஹ.⹥�z(j9�﹧ 9.���/9�9..��`HQ�H9nh��]���]��\��H��]��X��H����[�H9�'��b��`yb�y�)�,깢�9ce:+l�]��"���"y.⹥�H�9l#��`�i)��,�N�MI{�#9g*9i)���9�k�-�9�/9l`9.+z`!�b�-l9o-��#9n-�b�H��[�H:c�9."��m:j��9l#�nayf�ca��#9n �h-:e�9���]�9o�9�9`�9c%�b�x� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H����[�X\��]�\��[����[���̎O��[����]����]����KKH�\�KO��]��\��H��]��X�\�����[��\��H��]��]Y�Y�[XXܛȏ�'��H9k��)���[���]��\��H��]��ZXY[�H����:/ ��m�c�j�:n�."�-�
+
+�{�&�b!���9n*��!�kh��*��#:-�z,���#yc�� �zh$9�.�L�9c�yob�]���]��\��H��]��X��H����9��`�z/ ���H9nm9n�HU	L���H9."�-�9�!
+
+�{�#9�/yn �`/9o��j�:n�$�9�o:`/�	��H9aa�� �i&�d#yb!���9n*�o%y�*9�m�c칥n9���#9�!�ad9��9�!��n:`(��
+
+�9i*y/c���MH9�`��#:f�9o�
+�9i*ynl�ga�h,zak:`e�	{�#:h$9�'�L�9kf9g*9c�yob9�g�� �� ��]���]��\��H��]��Y���\�����[��\��H��]��\��\��H����Yܞ\���[����[���̎��[����]����]�����]�����]��KKH[��۝Z[�\�KO���KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d����T���d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO��]��\��H����\����]��\��H����\�Y\�ȏ��8��;�#�9�+9h,ydb�`�y/��,��*"�c��  ��#9.#y����$9.��/ey��z,��n�+l8� �b�9k�,�9nh�n �h-9��b�yb����;�#9��z,��*��!�(c:*ey/,:h�:f��� ��`9�"y`�y�/9�n9��ga�ஹ��9�/��m�."�.b�/,9`/;�#9k�f���n9ke�*��.�yd!9i)�.�9�$��`9ஹ���� ���]���]��\��H����\�X�Y�H���<'�%�9�,H�]YH���ܚ�9�'��$8������L�L�H�U����]����]����KKH8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��ԒT¸�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�dKO���ܚ\����8� 8� 8� �X\�	�ܙYY�[ZKX�\��H�Y��]8� 8� 8� ��[��[ۊ
+H�ۜ���ܙHHL��ۜ��H��[Y[���][[Y[��RY
+	ٙ��\�	�K��]�۝^
+	̙	�N�]��\�
+�\N�	��Y��]	��]N�]\�]Έ�]N����ܙKLH��ܙWK��X��ܛ�[���܎����Y�
+
+
+	�	��XL��I�K��ܙ\��Y���\��[Y�\�[��N�N���][ێ����WB�K��[ۜΈ�\�ۜ�]�N��[�K��]�]�	��	I��Y�[�Έ�Y�[���\�^N��[�HK��\��[�X�Y��[�HHB�B�JNJJ
+N���8� 8� 8� �\��[�H�\��8� 8� 8� ��[��[ۈXZ�T�\��Y�[���܊H�ۜ�[H��[Y[���][[Y[��RY
+Y
+NY�
+Y[
+H�]\���ۜ�X^HX]�X^
+����[�KZ[�HX]�Z[�����[�N�ۜ��[��HHX^HZ[�N�[˙�ܑXX�
+
+�JHO��ۜ��\�H��[Y[��ܙX]Q[[Y[�
+	�]��N�\���\�Ә[YHH	��\��X�\���\���[K�ZY�HX]�X^
+�X]���[�
+
+
+�HZ[�H��[��JH
+��
+JH
+�	�	��\���[K��X��ܛ�[�H��܎[�\[��[
+�\�NJNB�XZ�T�\��	��\��X���͎
+��K
+�L�
+�L
+�
+�
+�
+L
+�M̌
+��NMK	�ٍ�L�XI�NXZ�T�\��	��\��Y]	�̌�L�ML�L��
+LNNL�WK	�͌��YXI�NXZ�T�\��	��\��\��	��LL�K
+K��K	��N
+MY���NXZ�T�\��	��\��X����͌�
+��K
+�
+��
+�N
+�
+K
+�LWK	��XX��	�NXZ�T�\��	��\��^�	��K�K��K�
+KK��K��K�̋K��K	��
+���
+	�N���8� 8� 8� ��
+�Y^H[�H�\�8� 8� 8� ��[��[ۊ
+H�ۜ��H��[Y[���][[Y[��RY
+	؝�[�P�\�	�K��]�۝^
+	̙	�N�ۜ�X�[�H���̌��	��̍	�	��̍I�	��̍��	��̍��	��̎	�	��̎I�N�ۜ�]HH͎L�
+�L
+�
+�
+�
+L
+�M̌
+���
+��NMN��ۜ�ܘYY[�H��ܙX]S[�X\�ܘYY[�
+�
+NܘYY[��Y��ܔ��
+	ܙؘJ�
+�M
+�����JI�NܘYY[��Y��ܔ��
+K	ܙؘJ�
+�M
+����
+I�N��]��\�
+�\N�	�[�I��]N�X�[��]\�]Έ�X�[�	Е�
+T�
+I��]K��ܙ\���܎�	�ٍ�L�XI���X��ܛ�[���܎�ܘYY[���ܙ\��Y���K��[��Y]\Έ
+��[��X��ܛ�[���܎�	�ٍ�L�XI���[��ܙ\���܎�	��LL	���[��ܙ\��Y����[��YK�[��[ێ���K�WB�K��[ۜΈ�\�ۜ�]�N��YK�XZ[�Z[�\�X��][Έ�[�K�Y�[�ΈY�[���\�^N��[�HK���\��X��ܛ�[���܎�	��XL��I��]P��܎�	��L�N�	����P��܎�	�ٍ�L�XI���ܙ\���܎�	�̘L�
+L	���ܙ\��Y�K��[�X��ΈX�[��O�	�	�
+���\��Y�K����[T��[��
+B�B�B�K���[\Έ�ܚY����܎�	ܙؘJ
+�
+L��JI��]Лܙ\���[�HK�X��Έ���܎�	��NX����۝���^�N�LHHB�K�N�ܚY����܎�	ܙؘJ
+�
+L��JI��]Лܙ\���[�HK�X��Έ��܎�	��NX�����۝���^�N�LHK��[�X�Έ�O�	�	�
+�
+��L
+K�њ^Y
+
+H
+�	��B�B�B�B�JNJJ
+N���8� 8� 8� X\��]�Z[�[��H۝]8� 8� 8� ��[��[ۊ
+H�ۜ��H��[Y[���][[Y[��RY
+	��Z[�[��P�\�	�K��]�۝^
+	̙	�N�]��\�
+�\N�	��Y��]	��]N�X�[Έ�Е��	�U	�	Г���	��	�	���	�	�am�.��K�]\�]Έ�]N��MK�NK�Kˍ�
+��ˌK��LWK��X��ܛ�[���܎�	�ٍ�L�XI�	�͌��YXI�	��XX��	��	��
+���
+	�	��N
+MY���	�̘L�
+L	K��ܙ\��Y����ܙ\���܎�	��XL��I��ݙ\�ٙ��]�
+��WB�K��[ۜΈ�\�ۜ�]�N��YK�XZ[�Z[�\�X��][Έ�[�K��]�]�	͌	I��Y�[�ΈY�[����][ێ�	ܚY�	��X�[Έ��܎�	��NX�����۝���^�N�LHK����Y�L�Y[�Έ�B�K���\��X��ܛ�[���܎�	��XL��I��]P��܎�	��L�N�	����P��܎�	��L�N�	���ܙ\���܎�	�̘L�
+L	���ܙ\��Y�K��[�X��Έ�X�[��O���X�[
+�	Έ	�
+���\��Y
+�	�I�B�B�B�B�JNJJ
+N��ܚ\���؛�O���[�
