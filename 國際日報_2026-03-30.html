@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國際日報 2026-03-30</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #080a10;
+    color: #e2e8f0;
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Header ─────────────────────────────────────── */
+  .header {
+    background: linear-gradient(135deg, #0d111e 0%, #111827 60%, #0d1526 100%);
+    border-bottom: 1px solid #1e2337;
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.35);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 0.8rem;
+    color: #93c5fd;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+  }
+
+  /* ── Layout ──────────────────────────────────────── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+  section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #475569;
+    text-transform: uppercase;
+    border-left: 3px solid #3b82f6;
+    padding-left: 10px;
+    margin-bottom: 18px;
+  }
+
+  /* ── Summary Box ─────────────────────────────────── */
+  .summary-box {
+    background: linear-gradient(135deg, #0f1629 0%, #111827 100%);
+    border: 1px solid #1e2337;
+    border-left: 4px solid #3b82f6;
+    border-radius: 12px;
+    padding: 24px 28px;
+  }
+  .summary-box h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #60a5fa;
+    margin-bottom: 14px;
+  }
+  .summary-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .summary-box ul li {
+    display: flex;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+  }
+  .summary-box ul li::before {
+    content: '▸';
+    color: #3b82f6;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── Main Story ──────────────────────────────────── */
+  .main-story {
+    background: linear-gradient(135deg, #0f1629 0%, #0d1526 100%);
+    border: 1px solid #1e2337;
+    border-top: 4px solid #ef4444;
+    border-radius: 12px;
+    padding: 30px;
+  }
+  .main-story .story-tag {
+    display: inline-block;
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.4);
+    color: #fca5a5;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 3px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .main-story h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+  .main-story p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+  .main-story p:last-child { margin-bottom: 0; }
+  .story-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #1e2337;
+  }
+  .story-meta span { font-size: 0.8rem; color: #475569; }
+
+  /* ── Secondary Cards Grid ────────────────────────── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .news-card {
+    background: #0d111e;
+    border: 1px solid #1e2337;
+    border-radius: 12px;
+    padding: 22px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .news-card:hover { border-color: #334155; transform: translateY(-2px); }
+  .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .tag-politics  { background: rgba(59,130,246,0.15);  border: 1px solid rgba(59,130,246,0.4);  color: #93c5fd; }
+  .tag-conflict  { background: rgba(239,68,68,0.15);   border: 1px solid rgba(239,68,68,0.4);   color: #fca5a5; }
+  .tag-economy   { background: rgba(249,115,22,0.15);  border: 1px solid rgba(249,115,22,0.4);  color: #fdba74; }
+  .tag-tech      { background: rgba(34,197,94,0.15);   border: 1px solid rgba(34,197,94,0.4);   color: #86efac; }
+  .tag-society   { background: rgba(168,85,247,0.15);  border: 1px solid rgba(168,85,247,0.4);  color: #d8b4fe; }
+  .news-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 10px;
+    line-height: 1.45;
+  }
+  .news-card p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 14px;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #1e2337;
+  }
+  .card-footer .source { font-size: 0.75rem; color: #334155; }
+  .card-footer .time   { font-size: 0.75rem; color: #334155; }
+
+  /* ── Regional Roundup ────────────────────────────── */
+  .roundup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .roundup-card {
+    background: #0d111e;
+    border: 1px solid #1e2337;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .roundup-card h4 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #60a5fa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .roundup-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .roundup-card ul li {
+    font-size: 0.83rem;
+    color: #94a3b8;
+    padding-left: 12px;
+    position: relative;
+  }
+  .roundup-card ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #3b82f6;
+  }
+
+  /* ── Market Snapshot ─────────────────────────────── */
+  .market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .market-tile {
+    background: #0d111e;
+    border: 1px solid #1e2337;
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .market-tile .label { font-size: 0.73rem; color: #475569; margin-bottom: 6px; }
+  .market-tile .value { font-size: 1.2rem; font-weight: 700; color: #e2e8f0; }
+  .market-tile .change { font-size: 0.8rem; margin-top: 4px; }
+  .change.down { color: #ef4444; }
+  .change.up   { color: #22c55e; }
+
+  .market-note {
+    margin-top: 14px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+
+  /* ── Footer ──────────────────────────────────────── */
+  footer {
+    background: #080a10;
+    border-top: 1px solid #1e2337;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  footer p { font-size: 0.78rem; color: #334155; line-height: 1.8; }
+  footer .bot-tag {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    color: #60a5fa;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header class="header">
+  <div class="date-badge">🌍 國際日報 &nbsp;·&nbsp; INTERNATIONAL DAILY</div>
+  <h1>2026 年 3 月 30 日・國際大事彙整</h1>
+  <p class="subtitle">今日重要國際新聞摘要 ｜ 星期一</p>
+</header>
+
+<div class="container">
+
+  <!-- ════════════════ SUMMARY ════════════════ -->
+  <section>
+    <div class="section-title">今日摘要</div>
+    <div class="summary-box">
+      <h2>📌 今日五大要聞</h2>
+      <ul>
+        <li>美以對伊朗戰爭進入第31天，更多美軍抵達中東，以色列宣稱已準備好「多線戰爭」，外交談判同步進行。</li>
+        <li>胡塞武裝加入戰局，向以色列發射飛彈，並攻擊沙烏地阿拉伯美軍基地，造成逾十餘名美軍受傷。</li>
+        <li>美國國土安全部停擺持續，約61,000名TSA員工已連續三個薪資週期未獲薪水，參議院協商再度破局。</li>
+        <li>日本首相高市早苗訪問白宮，尋求在伊朗危機中強化美日安保合作，亞洲盟友憂心美軍戰略重心偏移。</li>
+        <li>美股持續下行——道瓊週五重挫逾793點進入修正區間，S&P 500創四年最長連跌紀錄，油價徘徊百美元關卡。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════ MAIN STORY ════════════════ -->
+  <section>
+    <div class="section-title">主要頭條</div>
+    <div class="main-story">
+      <span class="story-tag">🔴 衝突・第31天</span>
+      <h2>美以對伊朗戰爭進入第31天：更多美軍進駐中東、以色列備戰多線、外交窗口仍開啟</h2>
+
+      <p>自2月28日美國與以色列對伊朗發動空襲以來，戰事已延燒至第31天。截至3月29日，伊朗境內已有逾1,900人罹難，黎巴嫩遭以色列空襲造成至少1,238人死亡（其中包含至少124名兒童）。伊朗網路斷網已持續逾696小時，超過3,000萬名伊朗公民完全與外界隔絕。</p>
+
+      <p>3月29日，美以聯軍轟炸伊朗南部班達爾霍梅尼港市，造成至少5人死亡；另有報導指出，塔布里茲一座石化廠遭到攻擊。以色列軍方表示，距離清除所有「優先目標」僅剩數日，同時正在黎巴嫩南部推進，目標建立延伸至利塔尼河的「安全緩衝區」。與此同時，五角大廈正研擬地面特種作戰及步兵突襲方案，伊朗國會議長加利巴夫警告德黑蘭已做好迎戰準備。</p>
+
+      <p>外交方面，埃及、沙烏地阿拉伯、土耳其及巴基斯坦外長於伊斯蘭馬巴德舉行緊急會議，協商降低衝突的可行方案。川普總統聲稱「談判正在進行」，並延長對伊朗荷莫茲海峽能源設施的暫停打擊期限。然而，伊朗支持的胡塞武裝已正式宣布加入戰局，持續向以色列境內發射飛彈，並攻擊沙烏地阿拉伯美軍基地，造成逾十餘名美軍受傷，情勢依然高度動盪。</p>
+
+      <p>此次衝突對全球能源市場造成嚴重衝擊，布蘭特原油價格在衝突爆發後迅速攀升至每桶近百美元。歐洲多國已出現燃油短缺——斯洛維尼亞、匈牙利等國實施加油限額，義大利多處加油站因無油可售而暫停營業，英國亦討論引入燃油配給制度。</p>
+
+      <div class="story-meta">
+        <span>📰 來源：CNN、Al Jazeera、NPR</span>
+        <span>🕐 更新：2026-03-30</span>
+        <span>🌍 地區：中東・伊朗・以色列・黎巴嫩</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ SECONDARY STORIES ════════════════ -->
+  <section>
+    <div class="section-title">重要新聞</div>
+    <div class="cards-grid">
+
+      <div class="news-card">
+        <span class="tag tag-conflict">衝突</span>
+        <h3>財增ڶ�樣此台步，泩e��綊`�� �15百���攻擊</h3>
+        <p>伊朗支持的葉門胡塞武裝於3月28日宣布加入戰局，接連向以色列發射飛彈，並攻擊位於沙烏地阿拉伯的美軍基地，造成逾十餘名美軍受傷。此舉標誌著戰線正式擴展為多線衝突，以色列軍方已宣布進入「多線戰備」狀態。</p>
+        <div class="card-footer">
+          <span class="source">NPR・CNN</span>
+          <span class="time">3月28日</span>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <span class="tag tag-politics">美國政治</span>
+        <h3>DHS停擺持續，TSA員工已三個薪資週期無薪</h3>
+        <p>美國國土安全部自2月14日起因預算未通過而停擺，約61,000名TSA機場安全人員已連續錯過三次薪資發放。參議院上週將資金投票延遲逾五小時，協商再度失敗。週一起部分員工預計將獲得補發薪資，但整體資金缺口依然懸而未決。</p>
+        <div class="card-footer">
+          <span class="source">CNN Politics</span>
+          <span class="time">3月27日</span>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <span class="tag tag-politics">亞太外交</span>
+        <h3>日本首相高市早苗訪白宮，尋求強化美日同盟</h3>
+        <p>日本首相高市早苗訪問白宮，與川普總統就伊朗戰爭及亞太安全局勢進行會談。日本、台灣等依賴美國安全保障的亞洲盟友，對美軍戰略重心因伊朗戰爭而偏離亞太地區、削弱對中國威嚇力感到憂慮。</p>
+        <div class="card-footer">
+          <span class="source">Japan Times・CNN</span>
+          <span class="time">3月28日</span>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <span class="tag tag-economy">美國經濟</span>
+        <h3>川普經濟支持率持續下滑，過半數美國人預期財務惡化</h3>
+        <p>民調顯示川普在「生活成本」議題的淨支持率從-31跌至-41，在「通膨與物價上漲」議題從-33跌至-45。有53%的受訪者表示預期伊朗戰爭將使其個人財務狀況惡化，半數美國人表示繳付帳單後已無任何結餘。</p>
+        <div class="card-footer">
+          <span class="source">CNN Business・Ipsos</span>
+          <span class="time">3月25日</span>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <span class="tag tag-politics">台海情勢</span>
+        <h3>美國情報評估：中國2027年前入侵台灣可能性不高，但強制行動持續</h3>
+        <p>美國國家情報總監辦公室發布2026年年度威脅評估報告，認定中國在2027年前大規模入侵台灣的可能性較低，但北京將持續對台灣及印太地區施加軍事和政治壓力。台灣已依《反滲透法》起訴一名親北京的反對黨活動人士，認定其受中國情報機構指揮。</p>
+        <div class="card-footer">
+          <span class="source">AEI・Japan Times</span>
+          <span class="time">3月27日</span>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <span class="tag tag-economy">教育政策</span>
+        <h3>美國財政部接管1.7兆美元學生貸款組合</h3>
+        <p>美國財政部宣布將接管教育部管理的聯邦違約學生貸款，並計畫最終掌管近1.7兆美元的完整貸款組合，此為教育部持續縮編政策的一部分。此舉將對數百萬名借款人的帳款管理方式產生重大影響。</p>
+        <div class="card-footer">
+          <span class="source">CNN Politics</span>
+          <span class="time">3月27日</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════ REGIONAL ROUNDUP ════════════════ -->
+  <section>
+    <div class="section-title">區域快訊</div>
+    <div class="roundup-grid">
+
+      <div class="roundup-card">
+        <h4>🌏 亞太地區</h4>
+        <ul>
+          <li>中國商務部將20家日本企業列入出口管制名單，涵蓋日本海陸空天軍事能力</li>
+          <li>日本首相高市早苗訪美，日本憂慮美軍亞太威懾力因伊朗戰爭弱化</li>
+          <li>台灣起訴親北京活動人士，依《反滲透法》指控其受中國情報機構指揮</li>
+          <li>俄羅斯前安全會議秘書紹伊古聲援中國對台立場，並批評日本「軍事化」</li>
+        </ul>
+      </div>
+
+      <div class="roundup-card">
+        <h4>🇪🇺 歐洲</h4>
+        <ul>
+          <li>歐洲各國因油料供應受阻出現燃油短缺，斯洛維尼亞、匈牙利、義大利相繼限油</li>
+          <li>英國討論實施燃油配給制度，法國巴黎一座美國銀行大樓遭未遂炸彈攻擊</li>
+          <li>法國內政部長努內斯指出，未遂炸彈案與中東戰爭局勢有關</li>
+          <li>歐洲理事會就中東局勢發表結論，呼籲各方立即停火</li>
+        </ul>
+      </div>
+
+      <div class="roundup-card">
+        <h4>🌙 中東</h4>
+        <ul>
+          <li>埃及、沙烏地、土耳其、巴基斯坦外長伊斯蘭馬巴德峰會，討論伊朗降局方案</li>
+          <li>以色列繼續推進黎巴嫩南部利塔尼河地面行動，已造成逾1,238人死亡</li>
+          <li>伊朗網路斷網進入第30天，逾696小時，3,000萬公民與外界隔絕</li>
+          <li>川普延長荷莫茲海峽能源打擊暫停期限，表示談判「持續進行」</li>
+        </ul>
+      </div>
+
+      <div class="roundup-card">
+        <h4>🌎 美洲</h4>
+        <ul>
+          <li>美軍地面部隊持續抵達中東，五角大廈研議特種作戰及步兵突襲方案</li>
+          <li>美國民調顯示63%民眾預期伊朗戰爭使經濟在短期惡化</li>
+          <li>美國DHS停擺已逾44天，TSA員工薪資補發預計本週啟動</li>
+          <li>美財政部宣布接手1.7兆美元教育部聯邦學貸組合</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════ MARKET SNAPSHOT ════════════════ -->
+  <section>
+    <div class="section-title">市場快訊（3月27日收盤）</div>
+    <div class="market-grid">
+      <div class="market-tile">
+        <div class="label">道瓊工業指數</div>
+        <div class="value">45,166</div>
+        <div class="change down">▼ -793 pts (-1.73%)</div>
+      </div>
+      <div class="market-tile">
+        <div class="label">S&amp;P 500</div>
+        <div class="value">6,368</div>
+        <div class="change down">▼ -1.67%</div>
+      </div>
+      <div class="market-tile">
+        <div class="label">那斯達克</div>
+        <div class="value">20,948</div>
+        <div class="change down">▼ -2.15%</div>
+      </div>
+      <div class="market-tile">
+        <div class="label">布蘭特原油</div>
+        <div class="value">~$99</div>
+        <div class="change down">▼ 近百美元關卡</div>
+      </div>
+      <div class="market-tile">
+        <div class="label">美元／新台幣</div>
+        <div class="value">32.04</div>
+        <div class="change down">▼ 年變動 -3.47%</div>
+      </div>
+      <div class="market-tile">
+        <div class="label">WTI 原油</div>
+        <div class="value">~$92</div>
+        <div class="change down">▼ 戰爭高點回落</div>
+      </div>
+    </div>
+    <div class="market-note">
+      ⚠️ 道瓊指數本週正式進入修正區間（較高點下跌逾10%）；S&amp;P 500已連續第五週收跌，創四年來最長跌勢。能源市場受伊朗戰爭及荷莫茲海峽航運疑慮影響，油價維持高位震盪。
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <p>本報告內容僅供資訊參考，所有新聞資料來源均來自公開媒體報導（CNN、Al Jazeera、NPR、Japan Times、Reuters 等）。<br>
+  新聞時效以各來源報導時間為準；市場數據取自3月27日（週五）收盤。</p>
+  <div class="bot-tag">🤖 由 Claude Cowork 生成 ｜ 2026-03-30 自動化運行</div>
+</footer>
+
+</body>
+</html>
